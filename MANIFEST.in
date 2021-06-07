@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include dclimate *.css
+recursive-include dclimate *.csv
+recursive-include dclimate *.html
+recursive-include dclimate *.ico
+recursive-include dclimate *.js
+recursive-include dclimate *.json
+recursive-include dclimate *.md
+recursive-include dclimate *.png
+recursive-include dclimate *.py
+recursive-include dclimate *.svg
+recursive-include dclimate *.txt
+recursive-exclude dclimate *.pyc
