@@ -1,0 +1,120 @@
+{
+ "actions": [],
+ "autoname": "field:warranty_type",
+ "creation": "2021-06-09 08:33:02.119096",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "warranty_type",
+  "warranty_item",
+  "parts_warranty_years",
+  "labor_warranty_years",
+  "total_hours",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "warranty_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Warranty Type",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "warranty_item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Warranty Item",
+   "options": "Item",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "parts_warranty_years",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Parts Warranty (Years)"
+  },
+  {
+   "fieldname": "labor_warranty_years",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Labor Warranty (Years)"
+  },
+  {
+   "fieldname": "total_hours",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Heater Hours"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  }
+ ],
+ "links": [],
+ "modified": "2021-06-10 00:31:29.607178",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "DC Warranty Type",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Item Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Master Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "warranty_type,warranty_item",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "warranty_type",
+ "track_changes": 1
+}
