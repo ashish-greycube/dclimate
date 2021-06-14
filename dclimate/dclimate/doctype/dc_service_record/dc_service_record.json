@@ -1,0 +1,388 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2021-06-14 01:13:01.290444",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "serial_no",
+  "service_by_supplier",
+  "item_name",
+  "truck_vin",
+  "truck_number",
+  "cb_1",
+  "received_date",
+  "customer",
+  "installed_by_supplier",
+  "installation_date",
+  "warranty_info_section",
+  "parts_warranty_status",
+  "parts_warranty_expiry_date",
+  "heater_hours",
+  "cb_2",
+  "labor_warranty_status",
+  "labor_warranty_expiry_date",
+  "issue_section",
+  "issue_description",
+  "consumed_heater_hours",
+  "has_heating_issue",
+  "is_blower_fan_running",
+  "does_fuel_exist_in_the_filter",
+  "other_issue",
+  "cb_3",
+  "truck_miles",
+  "consumed_compressor_hours",
+  "has_cooling_issue",
+  "is_condenser_fan_running",
+  "is_blower_fan_working_for_cooling",
+  "is_compressor_running",
+  "are_all_fuses_ok",
+  "compressor_health_before_repair",
+  "cdt_health_before_repair",
+  "dt_health_before_repair",
+  "technician",
+  "repair_details_section",
+  "parts_detail",
+  "total_srt_hours",
+  "total_srt_cost",
+  "primary_failure",
+  "completion_date_time",
+  "cb_4",
+  "job_codes",
+  "root_cause",
+  "dclimate_engineer",
+  "technician_remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "reqd": 1
+  },
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Serial No",
+   "options": "Serial No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "service_by_supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Service by Supplier",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "serial_no.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Read Only",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "truck_vin",
+   "fieldtype": "Data",
+   "label": "Truck VIN"
+  },
+  {
+   "fieldname": "truck_number",
+   "fieldtype": "Read Only",
+   "label": "Truck Number"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Now",
+   "fieldname": "received_date",
+   "fieldtype": "Datetime",
+   "label": "Received Date"
+  },
+  {
+   "fetch_from": "serial_no.customer",
+   "fieldname": "customer",
+   "fieldtype": "Read Only",
+   "label": "Customer"
+  },
+  {
+   "fieldname": "installed_by_supplier",
+   "fieldtype": "Link",
+   "label": "Installed by Supplier",
+   "options": "Supplier",
+   "read_only": 1
+  },
+  {
+   "fieldname": "installation_date",
+   "fieldtype": "Date",
+   "label": "Installation Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "warranty_info_section",
+   "fieldtype": "Section Break",
+   "label": "Warranty Info"
+  },
+  {
+   "fieldname": "parts_warranty_status",
+   "fieldtype": "Select",
+   "label": "Parts Warranty Status",
+   "options": "\nUnder Warranty\nWarranty Expired"
+  },
+  {
+   "fetch_from": "serial_no.parts_warranty_expiry_date_cf",
+   "fieldname": "parts_warranty_expiry_date",
+   "fieldtype": "Date",
+   "label": "Parts Warranty Expiry Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "serial_no.total_heater_hours_cf",
+   "fieldname": "heater_hours",
+   "fieldtype": "Read Only",
+   "label": "Warranty for Heater Hours"
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "labor_warranty_status",
+   "fieldtype": "Select",
+   "label": "Labor Warranty Status",
+   "options": "\nUnder Warranty\nWarranty Expired"
+  },
+  {
+   "fetch_from": "serial_no.labor_warranty_expiry_date_cf",
+   "fieldname": "labor_warranty_expiry_date",
+   "fieldtype": "Date",
+   "label": "Labor Warranty Expiry Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "issue_section",
+   "fieldtype": "Section Break",
+   "label": "Issue"
+  },
+  {
+   "fieldname": "issue_description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Issue Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "consumed_heater_hours",
+   "fieldtype": "Int",
+   "label": "Consumed Heater Hours",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "has_heating_issue",
+   "fieldtype": "Check",
+   "label": "Has Heating Issue"
+  },
+  {
+   "fieldname": "other_issue",
+   "fieldtype": "Small Text",
+   "label": "Other Issue"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "truck_miles",
+   "fieldtype": "Data",
+   "label": "Truck Miles"
+  },
+  {
+   "fieldname": "consumed_compressor_hours",
+   "fieldtype": "Int",
+   "label": "Consumed Compressor Hours"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_cooling_issue",
+   "fieldtype": "Check",
+   "label": "Has Cooling Issue"
+  },
+  {
+   "fieldname": "technician",
+   "fieldtype": "Link",
+   "label": "Technician",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "repair_details_section",
+   "fieldtype": "Section Break",
+   "label": "Repair Details"
+  },
+  {
+   "fieldname": "total_srt_hours",
+   "fieldtype": "Int",
+   "label": "Total SRT Hours"
+  },
+  {
+   "fieldname": "total_srt_cost",
+   "fieldtype": "Currency",
+   "label": "Total SRT Cost"
+  },
+  {
+   "fieldname": "primary_failure",
+   "fieldtype": "Small Text",
+   "label": "Primary Failure"
+  },
+  {
+   "fieldname": "completion_date_time",
+   "fieldtype": "Datetime",
+   "label": "Completion Date Time"
+  },
+  {
+   "fieldname": "cb_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "root_cause",
+   "fieldtype": "Data",
+   "label": "Root Cause"
+  },
+  {
+   "fieldname": "dclimate_engineer",
+   "fieldtype": "Link",
+   "label": "DClimate Engineer",
+   "options": "User"
+  },
+  {
+   "fieldname": "technician_remarks",
+   "fieldtype": "Small Text",
+   "label": "Technician Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "DC Service Record",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "parts_detail",
+   "fieldtype": "Table",
+   "label": "Parts Detail",
+   "options": "DC Service Record Parts Detail"
+  },
+  {
+   "fieldname": "job_codes",
+   "fieldtype": "Table",
+   "label": "Job Codes",
+   "options": "DC Service Record Job Codes Detail"
+  },
+  {
+   "default": "0",
+   "depends_on": "doc.has_heating_issue == 1",
+   "fieldname": "is_blower_fan_running",
+   "fieldtype": "Check",
+   "label": "Is Blower Fan Running"
+  },
+  {
+   "default": "0",
+   "depends_on": "doc.has_heating_issue == 1",
+   "fieldname": "does_fuel_exist_in_the_filter",
+   "fieldtype": "Check",
+   "label": "Does Fuel Exist in the Filter"
+  },
+  {
+   "default": "0",
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "is_condenser_fan_running",
+   "fieldtype": "Check",
+   "label": "Is Condenser Fan Running"
+  },
+  {
+   "default": "0",
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "is_blower_fan_working_for_cooling",
+   "fieldtype": "Check",
+   "label": "Is Blower Fan Working for Cooling"
+  },
+  {
+   "default": "0",
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "is_compressor_running",
+   "fieldtype": "Check",
+   "label": "Is Compressor Running"
+  },
+  {
+   "default": "0",
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "are_all_fuses_ok",
+   "fieldtype": "Check",
+   "label": "Are All Fuses Ok"
+  },
+  {
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "compressor_health_before_repair",
+   "fieldtype": "Data",
+   "label": "Compressor Health Before Repair"
+  },
+  {
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "cdt_health_before_repair",
+   "fieldtype": "Data",
+   "label": "CDT Health Before Repair"
+  },
+  {
+   "depends_on": "doc.has_cooling_issue == 1",
+   "fieldname": "dt_health_before_repair",
+   "fieldtype": "Data",
+   "label": "DT Health Before Repair"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-06-14 01:34:12.856875",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "DC Service Record",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Support Team",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
