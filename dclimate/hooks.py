@@ -91,8 +91,8 @@ doctype_js = {"Installation Note" : "public/js/installation_note.js"}
 
 doc_events = {
 	"Delivery Note": {
-		"on_submit": "method",
-		"on_cancel": "method",
+		"on_submit": "dclimate.delivery_note_hooks.update_warranty_info_based_on_delivery_note",
+		"on_cancel": "dclimate.delivery_note_hooks.update_warranty_info_based_on_delivery_note",
 	}
 }
 
