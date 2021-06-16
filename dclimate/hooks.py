@@ -91,9 +91,13 @@ doctype_js = {"Installation Note" : "public/js/installation_note.js"}
 
 doc_events = {
 	"Delivery Note": {
-		"on_submit": "dclimate.delivery_note_hooks.update_warranty_info_based_on_delivery_note",
-		"on_cancel": "dclimate.delivery_note_hooks.update_warranty_info_based_on_delivery_note",
-	}
+		"on_submit": "dclimate.delivery_note_hook.update_warranty_info_based_on_delivery_note",
+		"on_cancel": "dclimate.delivery_note_hook.update_warranty_info_based_on_delivery_note",
+	},
+	"Installation Note": {
+		"on_submit": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
+		"on_cancel": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
+	}	
 }
 
 # Scheduled Tasks

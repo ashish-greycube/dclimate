@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import add_to_date
+from frappe import _
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
 def update_warranty_info_based_on_delivery_note(self,method):
@@ -18,6 +19,7 @@ def update_warranty_info_based_on_delivery_note(self,method):
                         serial_nos=get_serial_nos(item.serial_no)
                         for serial_no in serial_nos:
                             update_warranty_details_in_serial_no(self.posting_date,serial_no,dc_warranty_item)
+                            frappe.msgprint(_("Warranty details are updated in {0} serial no doctype.".format(frappe.bold(serial_no))),alert=True)
         # there is no dc_warranty_items so nothing to do
         else:
             return
@@ -29,7 +31,8 @@ def update_warranty_info_based_on_delivery_note(self,method):
                 if item.item_code != dc_warranty_item:
                     serial_nos=get_serial_nos(item.serial_no)
                     for serial_no in serial_nos:
-                        remove_warranty_details_from_serial_no(serial_no)            
+                        remove_warranty_details_from_serial_no(serial_no)
+                        frappe.msgprint(_("Warranty details are removed from {0} serial no doctype.".format(frappe.bold(serial_no))),alert=True)            
 
 def get_warranty_type_item(self):
     dc_warranty_items=[]
