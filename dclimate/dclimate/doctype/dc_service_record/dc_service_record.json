@@ -8,15 +8,16 @@
  "field_order": [
   "naming_series",
   "serial_no",
-  "service_by_supplier",
   "item_name",
-  "truck_vin",
-  "truck_number",
+  "service_by_supplier",
+  "supplier_price_list",
   "cb_1",
   "received_date",
   "customer",
   "installed_by_supplier",
   "installation_date",
+  "truck_vin",
+  "truck_number",
   "warranty_info_section",
   "parts_warranty_status",
   "parts_warranty_expiry_date",
@@ -27,13 +28,14 @@
   "issue_section",
   "issue_description",
   "consumed_heater_hours",
-  "has_heating_issue",
-  "is_blower_fan_running",
-  "does_fuel_exist_in_the_filter",
+  "technician",
   "other_issue",
   "cb_3",
   "truck_miles",
   "consumed_compressor_hours",
+  "has_heating_issue",
+  "is_blower_fan_running",
+  "does_fuel_exist_in_the_filter",
   "has_cooling_issue",
   "is_condenser_fan_running",
   "is_blower_fan_working_for_cooling",
@@ -42,19 +44,24 @@
   "compressor_health_before_repair",
   "cdt_health_before_repair",
   "dt_health_before_repair",
-  "technician",
   "repair_details_section",
   "parts_detail",
   "total_srt_hours",
   "total_srt_cost",
   "primary_failure",
-  "completion_date_time",
   "cb_4",
   "job_codes",
   "root_cause",
   "dclimate_engineer",
+  "amended_from",
+  "technician_inputs_section",
+  "compressor_health_after_repair",
+  "cdt_health_after_repair",
+  "dt_health_after_repair",
+  "ti_cb_1",
+  "action_taken",
   "technician_remarks",
-  "amended_from"
+  "completion_date_time"
  ],
  "fields": [
   {
@@ -62,12 +69,14 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Series",
+   "options": "DC-SR-.YY.-.MM.-.#",
    "reqd": 1
   },
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Serial No",
    "options": "Serial No",
    "reqd": 1
@@ -76,6 +85,7 @@
    "fieldname": "service_by_supplier",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Service by Supplier",
    "options": "Supplier",
    "reqd": 1
@@ -84,6 +94,8 @@
    "fetch_from": "serial_no.item_name",
    "fieldname": "item_name",
    "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Item Name"
   },
   {
@@ -134,7 +146,8 @@
    "fieldname": "parts_warranty_status",
    "fieldtype": "Select",
    "label": "Parts Warranty Status",
-   "options": "\nUnder Warranty\nWarranty Expired"
+   "options": "\nUnder Warranty\nWarranty Expired",
+   "read_only": 1
   },
   {
    "fetch_from": "serial_no.parts_warranty_expiry_date_cf",
@@ -147,7 +160,8 @@
    "fetch_from": "serial_no.total_heater_hours_cf",
    "fieldname": "heater_hours",
    "fieldtype": "Read Only",
-   "label": "Warranty for Heater Hours"
+   "label": "Warranty for Heater Hours",
+   "read_only": 1
   },
   {
    "fieldname": "cb_2",
@@ -157,7 +171,8 @@
    "fieldname": "labor_warranty_status",
    "fieldtype": "Select",
    "label": "Labor Warranty Status",
-   "options": "\nUnder Warranty\nWarranty Expired"
+   "options": "\nUnder Warranty\nWarranty Expired",
+   "read_only": 1
   },
   {
    "fetch_from": "serial_no.labor_warranty_expiry_date_cf",
@@ -185,6 +200,7 @@
    "reqd": 1
   },
   {
+   "bold": 1,
    "default": "0",
    "fieldname": "has_heating_issue",
    "fieldtype": "Check",
@@ -210,6 +226,7 @@
    "label": "Consumed Compressor Hours"
   },
   {
+   "bold": 1,
    "default": "0",
    "fieldname": "has_cooling_issue",
    "fieldtype": "Check",
@@ -289,69 +306,106 @@
   },
   {
    "default": "0",
-   "depends_on": "doc.has_heating_issue == 1",
+   "depends_on": "eval:doc.has_heating_issue == 1",
    "fieldname": "is_blower_fan_running",
    "fieldtype": "Check",
    "label": "Is Blower Fan Running"
   },
   {
    "default": "0",
-   "depends_on": "doc.has_heating_issue == 1",
+   "depends_on": "eval:doc.has_heating_issue == 1",
    "fieldname": "does_fuel_exist_in_the_filter",
    "fieldtype": "Check",
    "label": "Does Fuel Exist in the Filter"
   },
   {
    "default": "0",
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "is_condenser_fan_running",
    "fieldtype": "Check",
    "label": "Is Condenser Fan Running"
   },
   {
    "default": "0",
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "is_blower_fan_working_for_cooling",
    "fieldtype": "Check",
    "label": "Is Blower Fan Working for Cooling"
   },
   {
    "default": "0",
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "is_compressor_running",
    "fieldtype": "Check",
    "label": "Is Compressor Running"
   },
   {
    "default": "0",
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "are_all_fuses_ok",
    "fieldtype": "Check",
    "label": "Are All Fuses Ok"
   },
   {
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "compressor_health_before_repair",
    "fieldtype": "Data",
    "label": "Compressor Health Before Repair"
   },
   {
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "cdt_health_before_repair",
    "fieldtype": "Data",
    "label": "CDT Health Before Repair"
   },
   {
-   "depends_on": "doc.has_cooling_issue == 1",
+   "depends_on": "eval:doc.has_cooling_issue == 1",
    "fieldname": "dt_health_before_repair",
    "fieldtype": "Data",
    "label": "DT Health Before Repair"
+  },
+  {
+   "fetch_from": "supplier.default_price_list",
+   "fieldname": "supplier_price_list",
+   "fieldtype": "Link",
+   "label": "Supplier Price List",
+   "options": "Price List",
+   "read_only": 1
+  },
+  {
+   "fieldname": "technician_inputs_section",
+   "fieldtype": "Section Break",
+   "label": "Technician Inputs"
+  },
+  {
+   "fieldname": "compressor_health_after_repair",
+   "fieldtype": "Data",
+   "label": "Compressor Health After Repair"
+  },
+  {
+   "fieldname": "cdt_health_after_repair",
+   "fieldtype": "Data",
+   "label": "CDT Health After Repair"
+  },
+  {
+   "fieldname": "dt_health_after_repair",
+   "fieldtype": "Data",
+   "label": "DT Health After Repair "
+  },
+  {
+   "fieldname": "ti_cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "action_taken",
+   "fieldtype": "Data",
+   "label": "Action Taken"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-14 01:34:12.856875",
+ "modified": "2021-06-15 22:54:04.010629",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
