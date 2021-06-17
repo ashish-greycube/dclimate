@@ -6,12 +6,12 @@ from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
 def update_warranty_info_based_on_delivery_note(self,method):
     if method=='on_submit' and self.is_return==0:
-        dc_warranty_items=self.get_warranty_type_item()
+        dc_warranty_items=get_warranty_type_item(self)
         if dc_warranty_items:
             # multiple warranty type items found..so return
             if len(dc_warranty_items)>1:
-                frappe.throw(_('{0} items of type warranty found. You can have only one wrranty type item per delivery note.' \
-                    .format( frappe.bold(' '.join(str(e))for e in dc_warranty_items)),title='Multiple Warranty type items.'))                
+                frappe.throw(msg=_('{0} items of type warranty found. You can have only one wrranty type item per delivery note.' \
+                    .format( frappe.bold(' '.join(str(e))for e in dc_warranty_items))),title='Multiple Warranty type items.')                
             # single warranty type item found...so process it
             elif len(dc_warranty_items)==1:
                 dc_warranty_item=dc_warranty_items[0]
@@ -25,7 +25,7 @@ def update_warranty_info_based_on_delivery_note(self,method):
         else:
             return
     elif (method=='on_submit' and self.is_return==1) or (method=='on_cancel'):
-        dc_warranty_items=self.get_warranty_type_item()
+        dc_warranty_items=get_warranty_type_item(self)
         if len(dc_warranty_items)==1:
             dc_warranty_item=dc_warranty_items[0]
             for item in self.items:
@@ -38,7 +38,11 @@ def update_warranty_info_based_on_delivery_note(self,method):
 def get_warranty_type_item(self):
     dc_warranty_items=[]
     for item in self.items:
-        if frappe.db.exists('DC Warranty Type',item.item_code):
+        if frappe.db.exists({
+            "doctype":'DC Warranty Type',
+            'warranty_item':item.item_code
+        }):
+            
             dc_warranty_items.append(item.item_code)
     return dc_warranty_items            
 
@@ -51,29 +55,28 @@ def remove_warranty_details_from_serial_no(serial_no):
     serial_no.save(ignore_permissions=True)
 
 def update_warranty_details_in_serial_no(posting_date,serial_no,warranty_type):
+    dc_warranty_name=frappe.db.get_list('DC Warranty Type', filters=[['warranty_item', '=', warranty_type]],fields=['name'])[0]
     serial_no=frappe.get_doc('Serial No',serial_no)
-    warranty_type=frappe.get_doc('DC Warranty Type',warranty_type)
-
+    warranty_type=frappe.get_doc('DC Warranty Type',dc_warranty_name)
     if warranty_type.parts_warranty_years>0:
-        if serial_no.parts_warranty_expiry_date_cf!=None:
-            frappe.throw(_('{0} serial no couldnot be updated, as it has existing value {1} for parts warranty expiry date' \
-                .format(serial_no.name,serial_no.parts_warranty_expiry_date_cf),title='Existing value error'))
+        if serial_no.parts_warranty_expiry_date_cf:
+            frappe.throw(msg=_('{0} serial no couldnot be updated, as it has existing value {1} for parts warranty expiry date' \
+                .format(serial_no.name,serial_no.parts_warranty_expiry_date_cf)),title='Existing value error')
         else:
             serial_no.parts_warranty_expiry_date_cf=add_to_date(posting_date,years=warranty_type.parts_warranty_years)
 
     if warranty_type.labor_warranty_years>0:
-        if serial_no.labor_warranty_expiry_date_cf!=None:
-            frappe.throw(_('{0} serial no couldnot be updated, as it has existing value {1} for labor warranty expiry date' \
-                .format(serial_no.name,serial_no.labor_warranty_expiry_date_cf),title='Existing value error'))
+        if serial_no.labor_warranty_expiry_date_cf:
+            frappe.throw(msg=_('{0} serial no couldnot be updated, as it has existing value {1} for labor warranty expiry date' \
+                .format(serial_no.name,serial_no.labor_warranty_expiry_date_cf)),title='Existing value error')
         else:
             serial_no.labor_warranty_expiry_date_cf=add_to_date(posting_date,years=warranty_type.labor_warranty_years)            
 
     if warranty_type.total_hours>0:
         if serial_no.total_heater_hours_cf!=0:
-            frappe.throw(_('{0} serial no couldnot be updated, as it has existing value {1} for total heater hours' \
-                .format(serial_no.name,serial_no.total_heater_hours_cf),title='Existing value error'))
+            frappe.throw(msg=_('{0} serial no couldnot be updated, as it has existing value {1} for total heater hours' \
+                .format(serial_no.name,serial_no.total_heater_hours_cf)),title='Existing value error')
         else:
             serial_no.total_heater_hours_cf=warranty_type.total_hours
-        
     serial_no.save(ignore_permissions=True)
 

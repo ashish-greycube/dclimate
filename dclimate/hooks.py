@@ -176,3 +176,11 @@ user_data_fields = [
 # 	"dclimate.auth.validate"
 # ]
 
+fixtures = [
+      {
+        "dt": "Workspace", 
+        "filters": [["name", "in", ["DClimate"]]]
+      },
+     
+
+]
