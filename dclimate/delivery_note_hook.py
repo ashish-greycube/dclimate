@@ -3,6 +3,7 @@ from frappe.utils import add_to_date
 from frappe import _
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
+
 def update_warranty_info_based_on_delivery_note(self,method):
     if method=='on_submit' and self.is_return==0:
         dc_warranty_items=self.get_warranty_type_item()

@@ -5,4 +5,6 @@
 from frappe.model.document import Document
 
 class DCInstallationChecklist(Document):
-	pass
+	def autoname(self):
+		if self.checklist_name:
+			self.name=self.checklist_name
