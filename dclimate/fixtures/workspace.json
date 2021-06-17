@@ -136,9 +136,24 @@
     "parentfield": "links",
     "parenttype": "Workspace",
     "type": "Link"
+   },
+   {
+    "dependencies": null,
+    "hidden": 0,
+    "icon": null,
+    "is_query_report": 0,
+    "label": "Serial No",
+    "link_to": "Serial No",
+    "link_type": "DocType",
+    "onboard": 0,
+    "only_for": null,
+    "parent": "DClimate",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "type": "Link"
    }
   ],
-  "modified": "2021-06-17 00:16:00.026526",
+  "modified": "2021-06-17 00:25:47.647884",
   "module": "DClimate",
   "name": "DClimate",
   "onboarding": null,
