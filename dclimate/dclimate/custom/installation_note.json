@@ -416,7 +416,7 @@
    "report_hide": 0,
    "reqd": 0,
    "search_index": 0,
-   "translatable": 1,
+   "translatable": 0,
    "unique": 0,
    "width": null
   },
@@ -613,7 +613,7 @@
    "columns": 0,
    "creation": "2021-06-10 22:42:41.869514",
    "default": null,
-   "depends_on": "",
+   "depends_on": "eval:doc.installed_by_supplier_cf",
    "description": null,
    "docstatus": 0,
    "dt": "Installation Note",
