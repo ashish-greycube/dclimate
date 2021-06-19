@@ -22,6 +22,11 @@ def after_migrations():
 		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
 		make_records(import_folder_path,fname)
 
+	# if(not frappe.db.exists('User','florida_sp@test.com')):
+	# 	fname="user.json"
+	# 	import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
+	# 	make_records(import_folder_path,fname)		
+
 def make_records(path, fname):
 	if os.path.isdir(path):
 		import_file_by_path("{path}/{fname}".format(path=path, fname=fname))
