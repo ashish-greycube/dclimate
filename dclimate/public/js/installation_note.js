@@ -1,4 +1,15 @@
 frappe.ui.form.on('Installation Note', {
+    setup:function(frm){
+		frm.set_query('supplier_location_cf', function (doc) {
+			return {
+				query: 'frappe.contacts.doctype.address.address.address_query',
+				filters: {
+					link_doctype: 'Supplier',
+					link_name: doc.installed_by_supplier_cf
+				}
+			}
+		});        
+    },
     dc_installation_checklist_cf: function (frm) {
         if (frm.doc.dc_installation_checklist_cf){
 			return frappe.call({
@@ -17,6 +28,14 @@ frappe.ui.form.on('Installation Note', {
 			});            
         }
     },
+    before_submit: function (frm) {
+        var checklist_items = frm.doc.dc_installation_checklist_detail_cf || [];
+        for (let index in checklist_items){
+            if (checklist_items[index].is_checked==0){
+                frappe.throw({'message':__("'Is Checked' field at <b> row {0} is unchecked </b>. <br>Please check all 'Is Checked' fields in table 'Installation Check List' before submission.",[checklist_items[index].idx]),'title':__('Check List Error')})
+            }
+        }
+    },
     onload_post_render: function (frm) {
         if (frm.doc.dc_installation_checklist_cf == undefined || frm.doc.dc_installation_checklist_cf == '') {
             var items = frm.doc.items || [];
@@ -29,8 +48,9 @@ frappe.ui.form.on('Installation Note', {
 				callback: function(r) {
 					if(!r.exc && r.message) {
                         // directly set in doc, so as not to call triggers
-                        frm.fields_dict.dc_installation_checklist_cf.input.value=r.message.default_installation_checklist_cf
-						frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
+                        // frm.fields_dict.dc_installation_checklist_cf.input.value=r.message.default_installation_checklist_cf
+                        frm.set_value("dc_installation_checklist_cf", r.message.default_installation_checklist_cf);
+						// frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
 					}
 				}
 			}); 

@@ -58,7 +58,7 @@ doctype_js = {"Installation Note" : "public/js/installation_note.js"}
 
 # before_install = "dclimate.install.before_install"
 # after_install = "dclimate.install.after_install"
-
+after_migrate="dclimate.migrations.after_migrations"
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
@@ -181,6 +181,17 @@ fixtures = [
         "dt": "Workspace", 
         "filters": [["name", "in", ["DClimate"]]]
       },
-     
+      {
+        "dt": "Role", 
+        "filters": [["name", "in", ["DC Service Provider"]]]
+      },
+      {
+        "dt": "Custom DocPerm", 
+        "filters": [["role", "in", ["DC Service Provider"]]]
+      },
+      {
+        "dt": "User", 
+        "filters": [["name", "in", ["florida_sp@test.com"]]]
+      }			   			     
 
 ]
