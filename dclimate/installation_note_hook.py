@@ -10,7 +10,9 @@ def update_heater_info_based_on_installation_note(self,method):
       serial_nos=get_serial_nos(self.items[0].serial_no)
       if len(serial_nos)==0:
         frappe.msgprint(_("'Items' row doesnot have any serial no.<br> \
-                          Hence no update is made to serial no doctype"),alert=True)        
+                          Hence no update is made to serial no doctype"),alert=True)  
+      elif len(serial_nos)>1:
+        frappe.throw(msg=_("More than one serial no found in items table.<br> A single serial no is allowed." ),title='Serial No. Issue')        
       for serial_no in serial_nos:      
         update_heater_info_in_serial_no(serial_no,self.name,self.heater_serial_no_cf)
         frappe.msgprint(_("'Heater serial #' and 'Installation Note' reference are updated in {0} serial no doctype.".format(frappe.bold(serial_no))),alert=True)
