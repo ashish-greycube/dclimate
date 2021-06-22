@@ -4,6 +4,12 @@ from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 import json
 
 
+def check_for_single_serial_no(self,method):
+    if self.heater_serial_no_cf and len(self.items)==1:
+      serial_nos=get_serial_nos(self.items[0].serial_no)
+      if len(serial_nos)>1:
+        frappe.throw(msg=_("More than one serial no. found in items table.<br> A single serial no is allowed. Please correct it to continue.." ),title='Serial No. Issue')    
+
 def update_heater_info_based_on_installation_note(self,method):
   if method=='on_submit':
     if self.heater_serial_no_cf and len(self.items)==1:

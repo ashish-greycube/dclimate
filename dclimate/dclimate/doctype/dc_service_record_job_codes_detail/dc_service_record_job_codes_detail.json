@@ -19,6 +19,7 @@
   },
   {
    "fetch_from": "job_code.srt_hours_cf",
+   "fetch_if_empty": 1,
    "fieldname": "hours",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -29,7 +30,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-06-21 07:06:59.725560",
+ "modified": "2021-06-22 01:17:18.384004",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record Job Codes Detail",

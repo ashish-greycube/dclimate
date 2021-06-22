@@ -95,6 +95,7 @@ doc_events = {
 		"on_cancel": "dclimate.delivery_note_hook.update_warranty_info_based_on_delivery_note",
 	},
 	"Installation Note": {
+		"validate": "dclimate.installation_note_hook.check_for_single_serial_no",
 		"on_submit": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
 		"on_cancel": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
 	}	
