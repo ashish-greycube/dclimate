@@ -22,7 +22,17 @@ frappe.ui.form.on('DC Service Record', {
 					}
 				})				
     })		
-
+		frm.set_query("technician", function() {
+			if (frm.doc.service_by_supplier) {
+				return {
+					query: 'frappe.contacts.doctype.contact.contact.contact_query',
+					filters: {
+						link_doctype: "Supplier",
+						link_name: frm.doc.service_by_supplier
+					}
+				};
+			}
+		});
 	},
 	serial_no: function(frm){
 		let serial_no=frm.doc.serial_no

@@ -246,7 +246,7 @@
   },
   {
    "fieldname": "total_srt_hours",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "Total SRT Hours"
   },
   {
@@ -406,7 +406,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-22 22:50:12.426333",
+ "modified": "2021-06-24 00:07:43.381215",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
