@@ -79,7 +79,6 @@ def make_purchase_invoice(source_name, target_doc=None):
 			"doctype": "Purchase Invoice",
 			"field_map": {
 				"service_by_supplier":"supplier",
-				"supplier_price_list": "buying_price_list",
   			"received_date": "bill_date" ,
 				"technician":"contact_person",
 				"completion_date":"posting_date"
