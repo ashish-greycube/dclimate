@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import nowdate,get_link_to_form
+from frappe.utils import nowdate,get_link_to_form,get_datetime,getdate,get_time
 from frappe import _
 from erpnext import get_default_company
 
@@ -50,16 +50,16 @@ def make_purchase_invoice(source_name, target_doc=None):
 
 	doc = frappe.get_doc('DC Service Record', source_name)
 	def set_missing_values(source, target):
-		# target.set_posting_time=1
-		# target.posting_date=source.completion_date
+		target.set_posting_time=1
+		target.posting_date=getdate(source.completion_date_time)
+		target.posting_time=get_time(source.completion_date_time)
 		if len(target.get("items")) == 0:
 			frappe.throw(_("All items have already been Invoiced/Returned"))
 
 		doc = frappe.get_doc(target)
-		doc.posting_date=source.completion_date
 		doc.ignore_pricing_rule = 1
 		doc.bill_no = source.name
-		doc.payment_terms_template = get_payment_terms_template(source.service_by_supplier, "Supplier",get_default_company())
+		# doc.payment_terms_template = get_payment_terms_template(source.service_by_supplier, "Supplier",get_default_company())
 		# doc.run_method("onload")
 		doc.run_method("set_missing_values")
 		doc.run_method("calculate_taxes_and_totals")
