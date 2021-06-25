@@ -6,7 +6,9 @@
  "engine": "InnoDB",
  "field_order": [
   "warranty_item_group",
-  "job_codes_item_group"
+  "job_codes_item_group",
+  "parts_buy_back_margin_price_list",
+  "default_parts_under_warranty_replacement_service_item"
  ],
  "fields": [
   {
@@ -24,12 +26,26 @@
    "label": "Job Codes Item Group",
    "options": "Item Group",
    "reqd": 1
+  },
+  {
+   "fieldname": "parts_buy_back_margin_price_list",
+   "fieldtype": "Link",
+   "label": "Parts Buy Back Margin Price List",
+   "options": "Price List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_parts_under_warranty_replacement_service_item",
+   "fieldtype": "Link",
+   "label": "Default Parts Under Warranty Replacement Service Item",
+   "options": "Item",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-06-09 05:25:34.818760",
+ "modified": "2021-06-25 03:02:25.305091",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate Settings",
