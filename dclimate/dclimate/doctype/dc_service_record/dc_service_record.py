@@ -9,6 +9,8 @@ from erpnext import get_default_company
 
 class DCServiceRecord(Document):
 	def on_submit(self):
+		if not self.completion_date_time:
+			frappe.throw(msg=_("Please enter <b>Completion Date Time</b> value"),title="Missing Completion Date Time.")	
 		purchase_invoice=make_purchase_invoice(self.name)
 		if purchase_invoice!=0:
 			frappe.msgprint(msg=_("Purchase Invoice {0} is created based on DC Service Record {1}"
