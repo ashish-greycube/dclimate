@@ -20,23 +20,14 @@ class DCServiceRecord(Document):
 		# validate job price is present in supplier price list and calculate total hours and cost
 		total_srt_hours=0
 		total_srt_cost=0
-		supplier_price_list=self.supplier_price_list
+		# supplier_price_list=self.supplier_price_list
+		per_hour_rate_cf = frappe.db.get_value('Supplier', self.service_by_supplier, 'per_hour_rate_cf')
+		if not per_hour_rate_cf:
+			frappe.throw(msg=_('Per hour job rate is not defined for supplier {0}. Please contact DClimate'.format(frappe.bold(get_link_to_form('Supplier',self.service_by_supplier)))),title="Missing per hour job rate for supplier.")
 		if self.job_codes:
-			if not supplier_price_list:
-				frappe.throw(msg=_('Please define price list for supplier {0}'.format(frappe.bold(get_link_to_form('Supplier',self.service_by_supplier)))),title="Missing supplier price list.")
 			for job_item in self.job_codes:
 				if job_item.job_code:
-					job_cost_by_supplier=frappe.db.get_all('Item Price', filters={
-			'price_list': ['=', supplier_price_list],
-			'item_code': ['=', job_item.job_code],
-			'valid_from': ['<=', nowdate()]
-				},
-				fields=['price_list_rate'])
-				if job_cost_by_supplier and job_cost_by_supplier[0]:
-					total_srt_cost=total_srt_cost+job_item.hours*job_cost_by_supplier[0].get('price_list_rate')
-				else:
-					frappe.throw(msg=_("Item price for job code {0} not found in the supplier price list {1}. Please contact DClimate"
-							.format(frappe.bold(job_item.job_code),frappe.bold(supplier_price_list))),title='Job price not found error.')
+					total_srt_cost=total_srt_cost+job_item.hours*per_hour_rate_cf
 				if job_item.hours:
 					total_srt_hours=total_srt_hours+job_item.hours
 			self.total_srt_hours=total_srt_hours
@@ -86,6 +77,7 @@ def make_purchase_invoice(source_name, target_doc=None):
 			warranty_replacement_service_item_rate+=replacement_service_item_rate*item.qty															
 
 	def set_missing_values(source, target):
+		per_hour_rate_cf = frappe.db.get_value('Supplier', source.service_by_supplier, 'per_hour_rate_cf')
 		target.set_posting_time=1
 		target.posting_date=getdate(source.completion_date_time)
 		target.posting_time=get_time(source.completion_date_time)
@@ -102,6 +94,7 @@ def make_purchase_invoice(source_name, target_doc=None):
 				target.append('items',{
 				"item_code":item.job_code,
 				"qty" :item.hours,
+				"rate":per_hour_rate_cf
 				})
 
 		if len(target.get("items")) == 0:
@@ -126,10 +119,6 @@ def make_purchase_invoice(source_name, target_doc=None):
 			"validation": {
 				"docstatus": ["=", 1],
 			},
-		},
-		"Purchase Taxes and Charges": {
-			"doctype": "Purchase Taxes and Charges",
-			"add_if_empty": True
 		}
 	}, target_doc, set_missing_values)
 	doclist.save(ignore_permissions=True)
