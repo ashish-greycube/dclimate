@@ -235,9 +235,8 @@
   },
   {
    "fieldname": "technician",
-   "fieldtype": "Link",
-   "label": "Technician",
-   "options": "Contact"
+   "fieldtype": "Data",
+   "label": "Technician"
   },
   {
    "fieldname": "repair_details_section",
@@ -247,12 +246,14 @@
   {
    "fieldname": "total_srt_hours",
    "fieldtype": "Float",
-   "label": "Total SRT Hours"
+   "label": "Total SRT Hours",
+   "no_copy": 1
   },
   {
    "fieldname": "total_srt_cost",
    "fieldtype": "Currency",
-   "label": "Total SRT Cost"
+   "label": "Total SRT Cost",
+   "no_copy": 1
   },
   {
    "fieldname": "primary_failure",
@@ -406,7 +407,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-24 00:07:43.381215",
+ "modified": "2021-06-26 00:51:40.428055",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
