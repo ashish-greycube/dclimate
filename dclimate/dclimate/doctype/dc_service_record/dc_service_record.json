@@ -10,7 +10,6 @@
   "serial_no",
   "item_name",
   "service_by_supplier",
-  "supplier_price_list",
   "cb_1",
   "received_date",
   "customer",
@@ -127,9 +126,8 @@
   },
   {
    "fieldname": "installed_by_supplier",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Installed by Supplier",
-   "options": "Supplier",
    "read_only": 1
   },
   {
@@ -367,14 +365,6 @@
    "label": "DT Health Before Repair"
   },
   {
-   "fetch_from": "service_by_supplier.default_price_list",
-   "fieldname": "supplier_price_list",
-   "fieldtype": "Link",
-   "label": "Supplier Price List",
-   "options": "Price List",
-   "read_only": 1
-  },
-  {
    "fieldname": "technician_inputs_section",
    "fieldtype": "Section Break",
    "label": "Technician Inputs"
@@ -407,7 +397,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-26 00:51:40.428055",
+ "modified": "2021-06-27 12:04:29.936347",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
@@ -435,6 +425,18 @@
    "read": 1,
    "report": 1,
    "role": "Support Team",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "DC Service Provider",
    "share": 1,
    "submit": 1,
    "write": 1

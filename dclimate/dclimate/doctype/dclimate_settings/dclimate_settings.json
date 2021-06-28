@@ -45,7 +45,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-06-25 03:02:25.305091",
+ "modified": "2021-06-27 12:01:58.938453",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate Settings",
@@ -70,6 +70,14 @@
    "role": "Item Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "read": 1,
+   "role": "DC Service Provider"
+  },
+  {
+   "read": 1,
+   "role": "Support Team"
   }
  ],
  "sort_field": "modified",
