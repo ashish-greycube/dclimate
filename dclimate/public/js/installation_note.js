@@ -29,6 +29,8 @@ frappe.ui.form.on('Installation Note', {
         }
     },
     before_submit: function (frm) {
+        debugger
+        frm.toggle_reqd('heater_serial_no_cf', frm.doc.docstatus == '0');
         var checklist_items = frm.doc.dc_installation_checklist_detail_cf || [];
         for (let index in checklist_items){
             if (checklist_items[index].is_checked==0){

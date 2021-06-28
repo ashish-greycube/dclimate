@@ -394,10 +394,15 @@
    "label": "Action Taken"
   }
  ],
- "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2021-06-27 12:04:29.936347",
+ "links": [
+  {
+   "group": "Reference",
+   "link_doctype": "Purchase Invoice",
+   "link_fieldname": "dc_service_record_cf"
+  }
+ ],
+ "modified": "2021-06-28 01:45:01.420390",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",

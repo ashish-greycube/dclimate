@@ -6,6 +6,7 @@ from frappe.model.document import Document
 from frappe.utils import nowdate,get_link_to_form,get_datetime,getdate,get_time
 from frappe import _
 from erpnext import get_default_company
+from frappe.contacts.doctype.contact.contact import get_default_contact
 
 class DCServiceRecord(Document):
 	def on_submit(self):
@@ -83,6 +84,8 @@ def make_purchase_invoice(source_name, target_doc=None):
 		target.set_posting_time=1
 		target.posting_date=getdate(source.completion_date_time)
 		target.posting_time=get_time(source.completion_date_time)
+		target.contact_person=get_default_contact('Supplier',source.service_by_supplier)
+		target.dc_service_record_cf=source.name
 
 		if source.parts_warranty_status=='Under Warranty':
 			target.append('items',{
@@ -115,13 +118,12 @@ def make_purchase_invoice(source_name, target_doc=None):
 			"field_map": {
 				"service_by_supplier":"supplier",
   			"received_date": "bill_date" ,
-				"technician":"contact_person",
 				"completion_date":"posting_date"
 			},
 			"validation": {
 				"docstatus": ["=", 1],
 			},
 		}
-	}, target_doc, set_missing_values)
+	}, target_doc, set_missing_values,ignore_permissions=True)
 	doclist.save(ignore_permissions=True)
 	return doclist.name			
