@@ -179,6 +179,10 @@ user_data_fields = [
 
 fixtures = [
       {
+        "dt": "Workflow", 
+        "filters": [["name", "in", ["DC Service Record"]]]
+      },	
+      {
         "dt": "Workspace", 
         "filters": [["name", "in", ["DClimate"]]]
       },
