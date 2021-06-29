@@ -1,0 +1,178 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow",
+  "document_type": "DC Service Record",
+  "is_active": 1,
+  "modified": "2021-06-28 11:08:38.901094",
+  "name": "DC Service Record",
+  "override_status": 0,
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "send_email_alert": 1,
+  "states": [
+   {
+    "allow_edit": "Support Team",
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Draft",
+    "update_field": null,
+    "update_value": null
+   },
+   {
+    "allow_edit": "DC Service Provider",
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Draft",
+    "update_field": null,
+    "update_value": null
+   },
+   {
+    "allow_edit": "DC Service Provider",
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Pending for Technician Inputs",
+    "update_field": null,
+    "update_value": null
+   },
+   {
+    "allow_edit": "Support Team",
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Pending for DClimate Inputs",
+    "update_field": null,
+    "update_value": null
+   },
+   {
+    "allow_edit": "DC Service Provider",
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Completed",
+    "update_field": null,
+    "update_value": null
+   },
+   {
+    "allow_edit": "Support Team",
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Completed",
+    "update_field": null,
+    "update_value": null
+   },
+   {
+    "allow_edit": "Support Team",
+    "doc_status": "2",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "DC Service Record",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Cancelled",
+    "update_field": null,
+    "update_value": null
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Save",
+    "allow_self_approval": 1,
+    "allowed": "DC Service Provider",
+    "condition": null,
+    "next_state": "Pending for Technician Inputs",
+    "parent": "DC Service Record",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Draft"
+   },
+   {
+    "action": "Save",
+    "allow_self_approval": 1,
+    "allowed": "DC Service Provider",
+    "condition": null,
+    "next_state": "Pending for Technician Inputs",
+    "parent": "DC Service Record",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Pending for Technician Inputs"
+   },
+   {
+    "action": "Send  To DClimate",
+    "allow_self_approval": 1,
+    "allowed": "DC Service Provider",
+    "condition": null,
+    "next_state": "Pending for DClimate Inputs",
+    "parent": "DC Service Record",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Pending for Technician Inputs"
+   },
+   {
+    "action": "Mark Complete",
+    "allow_self_approval": 1,
+    "allowed": "DC Service Provider",
+    "condition": "doc.completion_date_time",
+    "next_state": "Completed",
+    "parent": "DC Service Record",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Pending for Technician Inputs"
+   },
+   {
+    "action": "Save",
+    "allow_self_approval": 1,
+    "allowed": "Support Team",
+    "condition": null,
+    "next_state": "Pending for DClimate Inputs",
+    "parent": "DC Service Record",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Pending for DClimate Inputs"
+   },
+   {
+    "action": "Assign to Technician",
+    "allow_self_approval": 1,
+    "allowed": "Support Team",
+    "condition": null,
+    "next_state": "Pending for Technician Inputs",
+    "parent": "DC Service Record",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Pending for DClimate Inputs"
+   }
+  ],
+  "workflow_name": "DC Service Record",
+  "workflow_state_field": "workflow_state"
+ }
+]
