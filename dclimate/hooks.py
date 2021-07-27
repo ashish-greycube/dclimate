@@ -187,10 +187,6 @@ fixtures = [
         "filters": [["name", "in", ["DC Service Provider"]]]
       },
       {
-        "dt": "Custom DocPerm", 
-        "filters": [["role", "in", ["DC Service Provider"]]]
-      },
-      {
         "dt": "User", 
         "filters": [["name", "in", ["florida_sp@test.com"]]]
       }			   			     
