@@ -16,11 +16,11 @@ def after_migrations():
 		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
 		make_records(import_folder_path,fname)
 
-	if(not frappe.db.exists({"doctype":'Custom DocPerm',
-														"role":'DC Service Provider'})):
-		fname="custom_docperm.json"
-		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
-		make_records(import_folder_path,fname)
+	# if(not frappe.db.exists({"doctype":'Custom DocPerm',
+	# 													"role":'DC Service Provider'})):
+	# 	fname="custom_docperm.json"
+	# 	import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
+	# 	make_records(import_folder_path,fname)
 
 	# if(not frappe.db.exists('Workflow','DC Service Record')):
 	# fname="workflow.json"
