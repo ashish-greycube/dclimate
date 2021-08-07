@@ -1,0 +1,32 @@
+{
+ "custom_fields": [],
+ "custom_perms": [],
+ "doctype": "Installation Note Item",
+ "property_setters": [
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2021-08-06 00:49:28.604883",
+   "default_value": null,
+   "doc_type": "Installation Note Item",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "qty",
+   "idx": 0,
+   "modified": "2021-08-06 00:49:28.604883",
+   "modified_by": "Administrator",
+   "name": "Installation Note Item-qty-default",
+   "owner": "Administrator",
+   "parent": null,
+   "parentfield": null,
+   "parenttype": null,
+   "property": "default",
+   "property_type": "Text",
+   "row_name": null,
+   "value": "1"
+  }
+ ],
+ "sync_on_migrate": 1
+}

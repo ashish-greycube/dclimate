@@ -50,31 +50,58 @@ def remove_heater_info_in_serial_no(serial_no):
     serial_no.save(ignore_permissions=True)  
 
 @frappe.whitelist()
-def get_dc_installation_checklist(checklist_name=None,items=None):
-  message=''
-  if items and not checklist_name:
+def get_dc_installation_checklist(checklist_names=None,items=None):
+  if checklist_names:
+    checklist_names=json.loads(checklist_names)
+  
+  if items:
     items=json.loads(items)
+
+
+  print('-'*10,checklist_names,items)
+  message=''
+  if items and not checklist_names:
+    
     for item in items:
-      default_installation_checklist_cf=frappe.db.get_value('Item', item.get('item_code'), 'default_installation_checklist_cf')
-      if default_installation_checklist_cf:
-        checklist_name=default_installation_checklist_cf
+
+      item=frappe.get_doc('Item', item.get('item_code'))
+
+      if item:
+        dc_installation_checklist_multi_cf=[]
+        data=[]
+        for default_installation_checklist in item.default_installation_checklist_multi_cf:
+          dc_installation_checklist_multi_cf.append({'dc_installation_checklist':default_installation_checklist.dc_installation_checklist})
+          checklist_details=get_checklist_detail(default_installation_checklist.dc_installation_checklist)
+          for checklist_detail in checklist_details:
+            data.append(checklist_detail)
         message={
-          'default_installation_checklist_cf':checklist_name,
-          'data': get_checklist_detail(checklist_name)
+          'dc_installation_checklist_multi_cf':dc_installation_checklist_multi_cf,
+          'data': data
           }
         return message
-  elif checklist_name:
+  elif checklist_names:
+      
+      print('checklist_names',checklist_names)
+      data=[]
+      for checklist_name in checklist_names:
+        
+        checklist_details=get_checklist_detail(checklist_name.get('dc_installation_checklist'))
+        for checklist_detail in checklist_details:
+          data.append(checklist_detail)       
+
       message={
-        'data':get_checklist_detail(checklist_name)
+        'data':data
         }      
       return message
 
 def get_checklist_detail(checklist_name):
+  print('checklist_name',checklist_name)
   data=[]
   checklist=frappe.get_doc('DC Installation Checklist', checklist_name)
-  checklist_details= checklist.get('dc_installation_checklist_detail')
-  for row in checklist_details:
+  # checklist_details= checklist.get('dc_installation_checklist_detail')
+  for row in checklist.dc_installation_checklist_detail:
     data.append({
+      'checklist':checklist_name,
       'activity':row.activity,
       'description':row.description,
       'is_checked':row.is_checked

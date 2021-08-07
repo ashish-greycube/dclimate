@@ -13,15 +13,14 @@ frappe.ui.form.on('DC Service Record', {
 		})
 		frappe.db.get_single_value('DClimate Settings', 'job_codes_item_group')
     .then(job_codes_item_group => {
-				console.log(job_codes_item_group)
 				frm.set_query('job_code','job_codes',()=>{
 					return {
 						filters:{
-							"item_group": job_codes_item_group
+							"item_group": ['descendants of',job_codes_item_group]
 						}
 					}
 				})				
-    })		
+    })	
 		frm.set_query("technician", function() {
 			if (frm.doc.service_by_supplier) {
 				return {

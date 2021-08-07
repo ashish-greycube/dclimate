@@ -101,7 +101,8 @@
   {
    "fieldname": "truck_vin",
    "fieldtype": "Data",
-   "label": "Truck VIN"
+   "label": "Truck VIN",
+   "read_only": 1
   },
   {
    "fieldname": "truck_number",
@@ -402,7 +403,7 @@
    "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2021-06-28 01:45:01.420390",
+ "modified": "2021-08-07 01:30:16.603632",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
@@ -423,6 +424,18 @@
   },
   {
    "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "DC Service Provider",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
    "delete": 1,
    "email": 1,
    "export": 1,
@@ -430,18 +443,6 @@
    "read": 1,
    "report": 1,
    "role": "Support Team",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "DC Service Provider",
    "share": 1,
    "submit": 1,
    "write": 1

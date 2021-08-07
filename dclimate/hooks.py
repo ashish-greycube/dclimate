@@ -185,10 +185,5 @@ fixtures = [
       {
         "dt": "Role", 
         "filters": [["name", "in", ["DC Service Provider"]]]
-      },
-      {
-        "dt": "User", 
-        "filters": [["name", "in", ["florida_sp@test.com"]]]
-      }			   			     
-
+      }
 ]

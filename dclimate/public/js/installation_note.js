@@ -10,23 +10,31 @@ frappe.ui.form.on('Installation Note', {
 			}
 		});        
     },
-    dc_installation_checklist_cf: function (frm) {
-        if (frm.doc.dc_installation_checklist_cf){
+    dc_installation_checklist_multi_cf: function (frm) {
+        if (frm.doc.dc_installation_checklist_multi_cf){
 			return frappe.call({
 				method: "dclimate.installation_note_hook.get_dc_installation_checklist",
 				args: {
-					"checklist_name": frm.doc.dc_installation_checklist_cf,
+					"checklist_names": frm.doc.dc_installation_checklist_multi_cf,
 					"items": undefined,
 				},
 				callback: function(r) {
+                    console.log(r)
 					if(!r.exc && r.message) {
 								if(r.message) {
 									frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
 								}
-					}
+					}else{
+                        frm.set_value("dc_installation_checklist_detail_cf", []);
+                    }
 				}
 			});            
         }
+        else{
+           
+            frm.refresh_field('dc_installation_checklist_detail_cf')
+        }
+        
     },
     before_submit: function (frm) {
         frm.toggle_reqd('heater_serial_no_cf', frm.doc.docstatus == '0');
@@ -38,20 +46,21 @@ frappe.ui.form.on('Installation Note', {
         }
     },
     onload_post_render: function (frm) {
-        if (frm.doc.dc_installation_checklist_cf == undefined || frm.doc.dc_installation_checklist_cf == '') {
+        if (frm.doc.dc_installation_checklist_multi_cf == undefined || frm.doc.dc_installation_checklist_multi_cf == '') {
             var items = frm.doc.items || [];
 			return frappe.call({
 				method: "dclimate.installation_note_hook.get_dc_installation_checklist",
 				args: {
-					"checklist_name": frm.doc.dc_installation_checklist_cf,
+					"checklist_names": frm.doc.dc_installation_checklist_multi_cf,
 					"items": frm.doc.items,
 				},
 				callback: function(r) {
+                        console.log('r',r)
 					if(!r.exc && r.message) {
                         // directly set in doc, so as not to call triggers
-                        // frm.fields_dict.dc_installation_checklist_cf.input.value=r.message.default_installation_checklist_cf
-                        frm.set_value("dc_installation_checklist_cf", r.message.default_installation_checklist_cf);
-						// frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
+                        // frm.fields_dict.dc_installation_checklist_multi_cf.input.value=r.message.default_installation_checklist_cf
+                        frm.set_value("dc_installation_checklist_multi_cf", r.message.dc_installation_checklist_multi_cf);
+						frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
 					}
 				}
 			}); 
@@ -72,14 +81,15 @@ function get_item_details(item_code, frm) {
         .then(r => {
             let default_installation_checklist_cf = r.message.default_installation_checklist_cf
             if (default_installation_checklist_cf != null) {
-                frm.fields_dict.dc_installation_checklist_cf.input.value=default_installation_checklist_cf
+                frm.fields_dict.dc_installation_checklist_multi_cf.input.value=default_installation_checklist_cf
                 return frappe.call({
                     method: "dclimate.installation_note_hook.get_dc_installation_checklist",
                     args: {
-                        "checklist_name": default_installation_checklist_cf,
+                        "checklist_names": default_installation_checklist_cf,
                         "items": undefined,
                     },
                     callback: function(r) {
+                        console.log('r',r)
                         if(!r.exc && r.message) {
                                     if(r.message) {
                                         frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
@@ -96,16 +106,18 @@ function get_item_details(item_code, frm) {
 frappe.ui.form.on('Installation Note Item', {
     item_code:function(frm,cdt,cdn){
         let row=locals[cdt][cdn]
-        if (row.item_code && (frm.doc.dc_installation_checklist_cf == undefined || frm.doc.dc_installation_checklist_cf == '')) {
+        if (row.item_code && (frm.doc.dc_installation_checklist_multi_cf == undefined || frm.doc.dc_installation_checklist_multi_cf == '')) {
             return frappe.call({
 				method: "dclimate.installation_note_hook.get_dc_installation_checklist",
 				args: {
-					"checklist_name": frm.doc.dc_installation_checklist_cf,
+					"checklist_names": frm.doc.dc_installation_checklist_multi_cf,
 					"items": frm.doc.items,
 				},
 				callback: function(r) {
+                    console.log('r',r)
 					if(!r.exc && r.message) {
-                        frm.set_value("dc_installation_checklist_cf", r.message.default_installation_checklist_cf);
+                        frm.set_value("dc_installation_checklist_multi_cf", r.message.dc_installation_checklist_multi_cf);
+                        frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
 					}
 				}
 			});          

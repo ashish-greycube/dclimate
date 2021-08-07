@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "creation": "2021-08-07 01:46:36.099155",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "checklist",
+  "activity",
+  "description",
+  "is_checked"
+ ],
+ "fields": [
+  {
+   "fieldname": "checklist",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Checklist",
+   "read_only": 1
+  },
+  {
+   "fieldname": "activity",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Activity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "in_list_view": 1,
+   "label": "Description"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_checked",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Checked"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-08-07 01:46:36.099155",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "DC Installation Checklist Multi Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
