@@ -58,7 +58,6 @@ def get_dc_installation_checklist(checklist_names=None,items=None):
     items=json.loads(items)
 
 
-  print('-'*10,checklist_names,items)
   message=''
   if items and not checklist_names:
     
@@ -81,7 +80,6 @@ def get_dc_installation_checklist(checklist_names=None,items=None):
         return message
   elif checklist_names:
       
-      print('checklist_names',checklist_names)
       data=[]
       for checklist_name in checklist_names:
         
@@ -95,7 +93,6 @@ def get_dc_installation_checklist(checklist_names=None,items=None):
       return message
 
 def get_checklist_detail(checklist_name):
-  print('checklist_name',checklist_name)
   data=[]
   checklist=frappe.get_doc('DC Installation Checklist', checklist_name)
   # checklist_details= checklist.get('dc_installation_checklist_detail')

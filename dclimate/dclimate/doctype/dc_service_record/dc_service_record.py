@@ -87,12 +87,13 @@ def make_purchase_invoice(source_name, target_doc=None):
 		target.contact_person=get_default_contact('Supplier',source.service_by_supplier)
 		target.dc_service_record_cf=source.name
 
-		if source.parts_warranty_status=='Under Warranty':
-			target.append('items',{
-			"item_code":default_parts_under_warranty_replacement_service_item,
-			"qty" :1,
-			"rate":warranty_replacement_service_item_rate				
-			})
+		if source.parts_detail and len(source.parts_detail)>0:
+			if source.parts_warranty_status=='Under Warranty':
+				target.append('items',{
+				"item_code":default_parts_under_warranty_replacement_service_item,
+				"qty" :1,
+				"rate":warranty_replacement_service_item_rate				
+				})
 
 		if source.labor_warranty_status=='Under Warranty':
 			for item in source.job_codes:

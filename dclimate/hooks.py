@@ -31,7 +31,9 @@ app_license = "MIT"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Installation Note" : "public/js/installation_note.js"}
+doctype_js = {
+	"Installation Note" : "public/js/installation_note.js"
+	}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -98,7 +100,10 @@ doc_events = {
 		"validate": "dclimate.installation_note_hook.check_for_single_serial_no",
 		"on_submit": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
 		"on_cancel": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
-	}	
+	}	,
+	"Purchase Invoice": {
+	"validate": "dclimate.purchase_invoice_hook.validate_supplier_against_dc_service_record",
+	}
 }
 
 # Scheduled Tasks

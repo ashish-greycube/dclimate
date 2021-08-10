@@ -1,4 +1,7 @@
 frappe.ui.form.on('Installation Note', {
+    refresh : function(frm){
+        $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
+    },
     setup:function(frm){
 		frm.set_query('supplier_location_cf', function (doc) {
 			return {
@@ -19,7 +22,6 @@ frappe.ui.form.on('Installation Note', {
 					"items": undefined,
 				},
 				callback: function(r) {
-                    console.log(r)
 					if(!r.exc && r.message) {
 								if(r.message) {
 									frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
@@ -38,6 +40,10 @@ frappe.ui.form.on('Installation Note', {
     },
     before_submit: function (frm) {
         frm.toggle_reqd('heater_serial_no_cf', frm.doc.docstatus == '0');
+        frm.toggle_reqd('truck_number_cf', frm.doc.docstatus == '0');
+        frm.toggle_reqd('truck_vin_cf', frm.doc.docstatus == '0');
+        frm.toggle_reqd('heater_serial_no_cf', frm.doc.docstatus == '0');
+       
         var checklist_items = frm.doc.dc_installation_checklist_detail_cf || [];
         for (let index in checklist_items){
             if (checklist_items[index].is_checked==0){
@@ -46,6 +52,7 @@ frappe.ui.form.on('Installation Note', {
         }
     },
     onload_post_render: function (frm) {
+        $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
         if (frm.doc.dc_installation_checklist_multi_cf == undefined || frm.doc.dc_installation_checklist_multi_cf == '') {
             var items = frm.doc.items || [];
 			return frappe.call({
@@ -55,7 +62,6 @@ frappe.ui.form.on('Installation Note', {
 					"items": frm.doc.items,
 				},
 				callback: function(r) {
-                        console.log('r',r)
 					if(!r.exc && r.message) {
                         // directly set in doc, so as not to call triggers
                         // frm.fields_dict.dc_installation_checklist_multi_cf.input.value=r.message.default_installation_checklist_cf
@@ -89,7 +95,6 @@ function get_item_details(item_code, frm) {
                         "items": undefined,
                     },
                     callback: function(r) {
-                        console.log('r',r)
                         if(!r.exc && r.message) {
                                     if(r.message) {
                                         frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
@@ -114,7 +119,6 @@ frappe.ui.form.on('Installation Note Item', {
 					"items": frm.doc.items,
 				},
 				callback: function(r) {
-                    console.log('r',r)
 					if(!r.exc && r.message) {
                         frm.set_value("dc_installation_checklist_multi_cf", r.message.dc_installation_checklist_multi_cf);
                         frm.set_value("dc_installation_checklist_detail_cf", r.message.data);
