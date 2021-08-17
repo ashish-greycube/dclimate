@@ -50,7 +50,10 @@ def check_serial_no_is_associated_with_installation_note(self,method):
         serial_no_doc = frappe.get_doc('Serial No', serial_no)
         if not serial_no_doc.installation__note_cf:
           frappe.throw(msg=_("Serial no. {0} for item {1} is not associated with any installation note.<br>Please correct it to continue..".format(serial_no,item.item_code) ),title='Serial No. not associated with Installation Note')
-
+        elif serial_no_doc.installation__note_cf:
+            installation_note_customer=frappe.db.get_value('Installation Note', serial_no_doc.installation__note_cf, 'customer')
+            if self.customer != installation_note_customer:
+                frappe.throw(msg=_("Serial no. {0} installed on different customer.<br>Please correct it to continue..".format(serial_no) ),title='Serial No. is used by different customer.')
 
 def update_warranty_info_based_on_delivery_note(self,method):
     if method=='on_submit' and self.is_return==0:
