@@ -93,12 +93,13 @@ after_migrate="dclimate.migrations.after_migrations"
 
 doc_events = {
 	"Delivery Note": {
-		"on_submit": "dclimate.delivery_note_hook.update_warranty_info_based_on_delivery_note",
+		"onload": "dclimate.delivery_note_hook.onload",
+		"on_submit": "dclimate.delivery_note_hook.on_submit_of_delivery_note",
 		"on_cancel": "dclimate.delivery_note_hook.update_warranty_info_based_on_delivery_note",
 	},
 	"Installation Note": {
 		"validate": "dclimate.installation_note_hook.check_for_single_serial_no",
-		"on_submit": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
+		"on_submit": "dclimate.installation_note_hook.on_submit_of_installation_note",
 		"on_cancel": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
 	}	,
 	"Purchase Invoice": {

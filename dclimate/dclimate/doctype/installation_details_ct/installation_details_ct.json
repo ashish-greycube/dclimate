@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "creation": "2021-08-13 01:43:09.827180",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ac_serial_no",
+  "truck_vin",
+  "truck_number",
+  "installed_by",
+  "installation_date",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "allow_on_submit": 1,
+   "columns": 2,
+   "fieldname": "ac_serial_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": " A/C Serial No",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "columns": 2,
+   "fieldname": "truck_vin",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Truck Vin",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "columns": 1,
+   "fieldname": "truck_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Truck No",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "columns": 2,
+   "fieldname": "installed_by",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "installed By",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "columns": 1,
+   "fieldname": "installation_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "columns": 2,
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remarks",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-08-17 05:17:32.666086",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "Installation Details CT",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

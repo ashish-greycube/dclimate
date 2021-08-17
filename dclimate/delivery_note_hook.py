@@ -3,6 +3,54 @@ from frappe.utils import add_to_date
 from frappe import _
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
+def onload(self,method):
+    if self.name:
+        load_installation_note_details_and_remarks(self)
+
+def load_installation_note_details_and_remarks(self):
+    if self.docstatus!=2:
+        if self.installation_remarks_cf==None and len(self.installation_detail_ct)==0:
+            for item in self.items:
+                serial_nos=get_serial_nos(item.serial_no)
+                for serial_no in serial_nos:
+                    serial_no_doc = frappe.get_doc('Serial No', serial_no)
+                    if serial_no_doc.installation__note_cf:
+                        installation_note = frappe.get_doc('Installation Note', serial_no_doc.installation__note_cf)
+                        supplier_name=frappe.db.get_value('Supplier', installation_note.installed_by_supplier_cf, 'supplier_name')
+
+                        self.append("installation_detail_ct", {
+                                "ac_serial_no":serial_no,
+                                "truck_vin": installation_note.truck_vin_cf or '',
+                                "truck_number":installation_note.truck_number_cf or '',
+                                "installed_by":supplier_name or '',
+                                "installation_date":installation_note.inst_date or '',
+                                "remarks":installation_note.remarks or ''
+                            })  
+                        frappe.msgprint(msg=_("Installation details are updated."), indicator='green',alert=True)
+                        self.save(ignore_permissions=True)
+                        frappe.db.commit()
+
+                        if self.installation_remarks_cf==None :
+                            city=frappe.db.get_value('Address', installation_note.supplier_location_cf, 'city')
+                            state=frappe.db.get_value('Address', installation_note.supplier_location_cf, 'state')
+                            self.installation_remarks_cf="Installed at {0}, {1} {2}".format(supplier_name or '',city or '',state or '')       
+                            frappe.msgprint(msg=_("Installation remarks are updated."), indicator='green',alert=True)
+                            self.save(ignore_permissions=True)
+                            frappe.db.commit()
+        else:
+            frappe.msgprint(msg=_("Existing installation notes found and hence no update."), indicator='orage', alert=True)
+def on_submit_of_delivery_note(self,method):
+  check_serial_no_is_associated_with_installation_note(self,method)
+  update_warranty_info_based_on_delivery_note(self,method)
+
+def check_serial_no_is_associated_with_installation_note(self,method):
+    for item in self.items:
+      serial_nos=get_serial_nos(item.serial_no)
+      for serial_no in serial_nos:
+        serial_no_doc = frappe.get_doc('Serial No', serial_no)
+        if not serial_no_doc.installation__note_cf:
+          frappe.throw(msg=_("Serial no. {0} for item {1} is not associated with any installation note.<br>Please correct it to continue..".format(serial_no,item.item_code) ),title='Serial No. not associated with Installation Note')
+
 
 def update_warranty_info_based_on_delivery_note(self,method):
     if method=='on_submit' and self.is_return==0:

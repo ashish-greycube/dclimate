@@ -4,11 +4,36 @@ from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 import json
 
 
+
+
+def on_submit_of_installation_note(self,method):
+  if not self.supervisor_name_cf:
+    frappe.throw(msg=_("Please enter supervisor name to continue.." ),title='Supervisor is mandatory.')    
+  update_heater_info_based_on_installation_note(self,method)
+  check_installation_note_serial_no_matches_serial_no_doctype(self,method)
+
+def check_installation_note_serial_no_matches_serial_no_doctype(self,method):
+    for item in self.items:
+      serial_nos=get_serial_nos(item.serial_no)
+      for serial_no in serial_nos:
+        serial_no_doc = frappe.get_doc('Serial No', serial_no)
+        if not serial_no_doc:
+          frappe.throw(msg=_("Serial no. {0} is for item {1} not found.Please correct it to continue..".format(serial_no,item.item_code) ),title='Serial No. Doesnot Exist.')
+        elif serial_no_doc.item_code!=item.item_code:
+          frappe.throw(msg=_("Serial no. {0} has item code {1} entered in installation note. It is incorrect. <br>Item code {2} is associated with serial no {3}. <br> Please correct it to continue..".format(serial_no,item.item_code,serial_no_doc.item_code,serial_no) ),title='Incorrect Item For Serial No.')
+
 def check_for_single_serial_no(self,method):
-    if self.heater_serial_no_cf and len(self.items)==1:
-      serial_nos=get_serial_nos(self.items[0].serial_no)
-      if len(serial_nos)>1:
-        frappe.throw(msg=_("More than one serial no. found in items table.<br> A single serial no is allowed. Please correct it to continue.." ),title='Serial No. Issue')    
+    if self.heater_serial_no_cf :
+      serial_no_found=False
+      for item in self.items:
+        serial_nos=get_serial_nos(item.serial_no)
+        if len(serial_nos)>1:
+          frappe.throw(msg=_("More than one serial no. found in items table.<br> A single serial no is allowed. Please correct it to continue.." ),title='Serial No. Issue')  
+        elif len(serial_nos)==1 and serial_no_found==False:
+          serial_no_found=True
+        elif serial_no_found==True:
+          frappe.throw(msg=_("More than one serial no. found in items table.<br> A single serial no is allowed. Please correct it to continue.." ),title='Serial No. Issue')
+
 
 def update_heater_info_based_on_installation_note(self,method):
   if method=='on_submit':
