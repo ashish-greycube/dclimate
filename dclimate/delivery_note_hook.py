@@ -17,12 +17,12 @@ def load_installation_note_details_and_remarks(self):
                     if serial_no_doc.installation__note_cf:
                         installation_note = frappe.get_doc('Installation Note', serial_no_doc.installation__note_cf)
                         supplier_name=frappe.db.get_value('Supplier', installation_note.installed_by_supplier_cf, 'supplier_name')
-
+                        supervisor_name_cf=installation_note.supervisor_name_cf
                         self.append("installation_detail_ct", {
                                 "ac_serial_no":serial_no,
                                 "truck_vin": installation_note.truck_vin_cf or '',
                                 "truck_number":installation_note.truck_number_cf or '',
-                                "installed_by":supplier_name or '',
+                                "installed_by":supervisor_name_cf or '',
                                 "installation_date":installation_note.inst_date or '',
                                 "remarks":installation_note.remarks or ''
                             })  
