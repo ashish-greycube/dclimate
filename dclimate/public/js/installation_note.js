@@ -1,4 +1,13 @@
 frappe.ui.form.on('Installation Note', {
+    check_all_cf: function(frm){
+        var checklist_items = frm.doc.dc_installation_checklist_detail_cf || [];
+        for (let index in checklist_items){
+            if (checklist_items[index].is_checked==0){
+                frappe.model.set_value(checklist_items[index].doctype, checklist_items[index].name, "is_checked", 1)
+            }
+        }      
+        frm.refresh_field('dc_installation_checklist_detail_cf')
+    },
     refresh : function(frm){
         $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
     },
