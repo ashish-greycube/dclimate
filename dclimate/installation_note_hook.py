@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 import json
+from frappe.utils import get_link_to_form
 
 
 
@@ -21,6 +22,9 @@ def check_installation_note_serial_no_matches_serial_no_doctype(self,method):
           frappe.throw(msg=_("Serial no. {0} is for item {1} not found.Please correct it to continue..".format(serial_no,item.item_code) ),title='Serial No. Doesnot Exist.')
         elif serial_no_doc.item_code!=item.item_code:
           frappe.throw(msg=_("Serial no. {0} has item code {1} entered in installation note. It is incorrect. <br>Item code {2} is associated with serial no {3}. <br> Please correct it to continue..".format(serial_no,item.item_code,serial_no_doc.item_code,serial_no) ),title='Incorrect Item For Serial No.')
+        # enable after  legacy data is imported
+        # elif serial_no_doc.status!='Active':
+        #   frappe.throw(msg=_("Serial no. {0} has status {1}. It should be Active. Please correct it to continue..".format(frappe.bold(get_link_to_form("Serial No", serial_no_doc.serial_no)),serial_no_doc.status) ),title='Serial No. status is not Active.')
 
 def check_for_single_serial_no(self,method):
     if self.heater_serial_no_cf :

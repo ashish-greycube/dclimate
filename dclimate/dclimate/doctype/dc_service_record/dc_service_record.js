@@ -6,7 +6,7 @@ frappe.ui.form.on('DC Service Record', {
 		frm.set_query('serial_no',()=>{
 			return {
 				filters:{
-					"status": "Delivered",
+					"status": ["in",["Delivered","Inactive"]],
 					"installation__note_cf":["not in",[undefined]]
 				}
 			}
