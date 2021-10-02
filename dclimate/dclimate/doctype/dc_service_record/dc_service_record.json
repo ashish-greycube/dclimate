@@ -122,7 +122,6 @@
    "label": "Received Date"
   },
   {
-   "fetch_from": "serial_no.customer",
    "fieldname": "customer",
    "fieldtype": "Read Only",
    "label": "Customer"
@@ -415,7 +414,7 @@
    "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2021-08-09 23:46:33.741214",
+ "modified": "2021-10-01 23:48:49.990895",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",

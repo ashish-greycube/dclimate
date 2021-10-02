@@ -40,17 +40,21 @@ frappe.ui.form.on('DC Service Record', {
 					.then((r)=>{
 						let installation__note_cf=r.message.installation__note_cf;
 						if (installation__note_cf) {
-							frappe.db.get_value('Installation Note',installation__note_cf,['truck_vin_cf','truck_number_cf'])
+							frappe.db.get_value('Installation Note',installation__note_cf,['truck_vin_cf','truck_number_cf','customer'])
 								.then((r)=>{
 									if(r.message){
 									let truck_vin_cf=r.message.truck_vin_cf;
 									let truck_number_cf=r.message.truck_number_cf;
+									let customer=r.message.customer;
 									if (truck_vin_cf) {
 										frm.set_value('truck_vin',truck_vin_cf)
 									}
 									if (truck_number_cf) {
 										frm.set_value('truck_number',truck_number_cf)
 									}
+									if (customer) {
+										frm.set_value('customer',customer)
+									}									
 								}
 								})
 						}
