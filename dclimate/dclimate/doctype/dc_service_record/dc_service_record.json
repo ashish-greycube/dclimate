@@ -10,6 +10,8 @@
   "serial_no",
   "item_name",
   "service_by_supplier",
+  "supplier_address",
+  "supplier_address_display",
   "cb_1",
   "received_date",
   "customer",
@@ -404,6 +406,20 @@
    "fieldname": "engineering_input",
    "fieldtype": "Small Text",
    "label": "Engineering Input"
+  },
+  {
+   "depends_on": "eval:doc.service_by_supplier",
+   "fieldname": "supplier_address",
+   "fieldtype": "Link",
+   "label": "Supplier Address",
+   "options": "Address"
+  },
+  {
+   "depends_on": "eval:doc.supplier_address",
+   "fieldname": "supplier_address_display",
+   "fieldtype": "Small Text",
+   "label": "Supplier Address Display",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
@@ -414,7 +430,7 @@
    "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2021-10-01 23:48:49.990895",
+ "modified": "2021-10-18 11:35:20.820598",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
