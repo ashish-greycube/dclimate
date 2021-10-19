@@ -33,6 +33,37 @@ frappe.ui.form.on('DC Service Record', {
 			}
 		});
 	},
+	supplier_address: function (frm) {
+			if (frm.doc.supplier_address) {
+				erpnext.utils.get_address_display(frm, "supplier_address",
+					"supplier_address_display", true);
+			}
+		},
+		service_by_supplier: function (frm) {
+			if (frm.doc.service_by_supplier) {
+				frappe.db.get_list('Dynamic Link', {
+					fields: ['parent'],
+					filters: {
+						link_doctype: 'Supplier',
+						link_name: frm.doc.service_by_supplier
+					}
+				}).then(records => {
+					if (records.length > 0) {
+						let address_list = []
+						records.forEach(record => {
+							address_list.push(record.parent)
+						});
+						frm.set_query('supplier_address', () => {
+							return {
+								filters: {
+									name: ['in', address_list]
+								}
+							}
+						})
+					}
+				})
+			}
+		},
 	serial_no: function(frm){
 		let serial_no=frm.doc.serial_no
 		if (serial_no) {
