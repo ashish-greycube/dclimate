@@ -45,7 +45,9 @@ frappe.ui.form.on('DC Service Record', {
 					fields: ['parent'],
 					filters: {
 						link_doctype: 'Supplier',
-						link_name: frm.doc.service_by_supplier
+						link_name: frm.doc.service_by_supplier,
+						parentfield : 'links',
+						parenttype :'Address'						
 					}
 				}).then(records => {
 					if (records.length > 0) {
