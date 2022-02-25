@@ -15,6 +15,8 @@
   "cb_1",
   "received_date",
   "customer",
+  "end_customer",
+  "end_customer_name",
   "installed_by_supplier",
   "installation_date",
   "truck_vin",
@@ -420,6 +422,21 @@
    "fieldtype": "Small Text",
    "label": "Supplier Address Display",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "end_customer",
+   "fieldtype": "Link",
+   "label": "End Customer",
+   "options": "Customer"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "end_customer.customer_name",
+   "fieldname": "end_customer_name",
+   "fieldtype": "Data",
+   "label": "End Customer Name",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
@@ -430,7 +447,7 @@
    "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2021-10-18 11:35:20.820598",
+ "modified": "2022-02-24 23:10:10.042305",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
