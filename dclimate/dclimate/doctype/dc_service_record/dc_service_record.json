@@ -425,6 +425,7 @@
   },
   {
    "allow_on_submit": 1,
+   "fetch_from": "serial_no.end_customer_cf",
    "fieldname": "end_customer",
    "fieldtype": "Link",
    "label": "End Customer",
@@ -447,7 +448,7 @@
    "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2022-02-24 23:10:10.042305",
+ "modified": "2022-02-25 01:15:20.835230",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
