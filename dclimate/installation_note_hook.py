@@ -49,7 +49,7 @@ def update_heater_info_based_on_installation_note(self,method):
       elif len(serial_nos)>1:
         frappe.throw(msg=_("More than one serial no found in items table.<br> A single serial no is allowed." ),title='Serial No. Issue')        
       for serial_no in serial_nos:      
-        update_heater_info_in_serial_no(serial_no,self.name,self.heater_serial_no_cf)
+        update_heater_info_in_serial_no(serial_no,self.name,self.heater_serial_no_cf,self.end_customer_name_cf)
         frappe.msgprint(_("'Heater serial #' and 'Installation Note' reference are updated in {0} serial no doctype.".format(frappe.bold(serial_no))),alert=True)
     else:
       frappe.msgprint(_("'Heater Serial No' field is empty OR 'Items' table has more than 1 record.<br> \
@@ -61,7 +61,7 @@ def update_heater_info_based_on_installation_note(self,method):
         remove_heater_info_in_serial_no(serial_no)
         frappe.msgprint(_("'Heater serial #' and 'Installation Note' reference are removed from {0} serial no doctype.".format(frappe.bold(serial_no))),alert=True)   
 
-def update_heater_info_in_serial_no(serial_no,installation_note_name,heater_serial_no_cf):
+def update_heater_info_in_serial_no(serial_no,installation_note_name,heater_serial_no_cf,end_customer_name_cf):
   serial_no=frappe.get_doc('Serial No',serial_no)
   if serial_no.heater_serial_no_cf or serial_no.installation__note_cf:
       frappe.throw(msg=_("{0} serial no couldnot be updated, as it has existing value {1} for 'Heater Serial #' \
@@ -69,6 +69,7 @@ def update_heater_info_in_serial_no(serial_no,installation_note_name,heater_seri
           .format(serial_no.name,serial_no.heater_serial_no_cf,serial_no.installation__note_cf)),title='Existing value error')
   else:
       serial_no.heater_serial_no_cf=heater_serial_no_cf 
+      serial_no.end_customer_name_cf=end_customer_name_cf
       serial_no.installation__note_cf=installation_note_name
       serial_no.save(ignore_permissions=True)
 
