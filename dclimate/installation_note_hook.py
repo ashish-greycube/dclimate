@@ -77,6 +77,8 @@ def update_heater_info_in_serial_no(serial_no,installation_note_name,heater_seri
 def remove_heater_info_in_serial_no(serial_no):
     serial_no=frappe.get_doc('Serial No',serial_no)
     serial_no.heater_serial_no_cf=None
+    serial_no.end_customer_cf=None
+    serial_no.end_customer_name_cf=None  
     serial_no.installation__note_cf=None
     serial_no.save(ignore_permissions=True)  
 
