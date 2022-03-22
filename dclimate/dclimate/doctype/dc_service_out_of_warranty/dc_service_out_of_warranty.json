@@ -210,8 +210,9 @@
   },
   {
    "fieldname": "technician",
-   "fieldtype": "Data",
-   "label": "Technician"
+   "fieldtype": "Link",
+   "label": "Technician",
+   "options": "Employee"
   },
   {
    "fieldname": "other_issue",
@@ -422,7 +423,7 @@
    "link_fieldname": "dc_service_out_of_warranty_cf"
   }
  ],
- "modified": "2022-03-22 06:42:55.757533",
+ "modified": "2022-03-22 07:41:31.257454",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Out of Warranty",
