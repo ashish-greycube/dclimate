@@ -3,14 +3,15 @@
 
 frappe.ui.form.on('DC Service Record', {
 	setup: function(frm) {
-		frm.set_query('serial_no',()=>{
-			return {
-				filters:{
-					"status": ["in",["Delivered","Inactive"]],
-					"installation__note_cf":["not in",[undefined]]
-				}
-			}
-		})
+		frm.set_query('serial_no', 'dclimate.dclimate.doctype.dc_service_record.dc_service_record.fetch_serial_no');		
+		// frm.set_query('serial_no',()=>{
+		// 	return {
+		// 		filters:{
+		// 			"status": ["in",["Delivered","Inactive"]],
+		// 			"installation__note_cf":["not in",[undefined]]
+		// 		}
+		// 	}
+		// })
 		frappe.db.get_single_value('DClimate Settings', 'job_codes_item_group')
     .then(job_codes_item_group => {
 				frm.set_query('job_code','job_codes',()=>{

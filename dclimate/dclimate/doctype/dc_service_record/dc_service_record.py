@@ -7,6 +7,7 @@ from frappe.utils import nowdate,get_link_to_form,get_datetime,getdate,get_time
 from frappe import _
 from erpnext import get_default_company
 from frappe.contacts.doctype.contact.contact import get_default_contact
+from frappe.utils import today
 
 class DCServiceRecord(Document):
 	def on_submit(self):
@@ -128,3 +129,14 @@ def make_purchase_invoice(source_name, target_doc=None):
 	}, target_doc, set_missing_values,ignore_permissions=True)
 	doclist.save(ignore_permissions=True)
 	return doclist.name			
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def fetch_serial_no(doctype, txt, searchfield, start, page_len, filters):
+	data = frappe.db.sql(""" SELECT name,serial_no,item_code FROM `tabSerial No`
+WHERE status in ("Delivered","Inactive")
+and installation__note_cf IS NOT NULL 
+and (
+parts_warranty_expiry_date_cf >= %s or
+warranty_expiry_date >= %s)""", (today(), today()))
+	return data

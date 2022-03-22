@@ -2,7 +2,7 @@
  "cards_label": "DClimate",
  "category": "Modules",
  "charts": [],
- "creation": "2021-06-17 00:14:36.113192",
+ "creation": "2021-10-04 05:59:36.755147",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
  "docstatus": 0,
@@ -93,9 +93,27 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "DC Service Out of Warranty",
+   "link_to": "DC Service Out of Warranty",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Invoice",
+   "link_to": "Sales Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2021-06-17 00:25:47.647884",
+ "modified": "2022-03-22 01:58:37.714105",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate",
