@@ -66,9 +66,8 @@ def fetch_serial_no(doctype, txt, searchfield, start, page_len, filters):
 	data = frappe.db.sql(""" SELECT name,serial_no,item_code FROM `tabSerial No`
 WHERE status in ("Delivered","Inactive")
 and installation__note_cf IS NOT NULL 
-and (
-parts_warranty_expiry_date_cf < %s or
-warranty_expiry_date < %s)""", (today(), today()))
+and parts_warranty_expiry_date_cf < %s 
+and warranty_expiry_date < %s""", (today(), today()))
 	return data
 
 @frappe.whitelist()
