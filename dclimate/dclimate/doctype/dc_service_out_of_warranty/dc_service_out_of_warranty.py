@@ -1,6 +1,7 @@
 # Copyright (c) 2022, GreyCube Technologies and contributors
 # For license information, please see license.txt
 
+from distutils.log import debug
 import frappe
 import erpnext
 from frappe.model.document import Document
@@ -20,11 +21,11 @@ class DCServiceOutofWarranty(Document):
 		if not self.end_customer:
 			frappe.throw(msg=_("Please enter <b>End Customer</b> value in serial no"),title="Missing End Customer.")	
 
-		sales_invoice=make_sales_invoice(self.name)		
-		if sales_invoice!=0:
-			frappe.msgprint(msg=_("Sales Invoice {0} is created based on DC Service Out of Warranty {1}"
-			.format(frappe.bold(get_link_to_form("Sales Invoice",sales_invoice)),frappe.bold(self.name))),
-			title="Sales Invoice is created.",
+		delivery_note=make_delivery_note(self.name)		
+		if delivery_note!=0:
+			frappe.msgprint(msg=_("Delivery Note {0} is created based on DC Service Out of Warranty {1}"
+			.format(frappe.bold(get_link_to_form("Delivery Note",delivery_note)),frappe.bold(self.name))),
+			title="Delivery Note is created.",
 			indicator="green")
 
 	def validate(self):
@@ -67,36 +68,28 @@ def fetch_serial_no(doctype, txt, searchfield, start, page_len, filters):
 WHERE status in ("Delivered","Inactive")
 and installation__note_cf IS NOT NULL 
 and parts_warranty_expiry_date_cf < %s 
-and warranty_expiry_date < %s""", (today(), today()))
+and labor_warranty_expiry_date_cf < %s""", (today(), today()))
 	return data
 
 @frappe.whitelist()
-def make_sales_invoice(source_name, target_doc=None):
-
+def make_delivery_note(source_name, target_doc=None):
 	after_sales_income_account = frappe.db.get_single_value('DClimate Settings', 'after_sales_income_account')
 	price_list = (frappe.db.get_single_value('Selling Settings', 'selling_price_list') or frappe.db.get_value('Price List', _('Standard Selling')))		
 
-	doc = frappe.get_doc('DC Service Out of Warranty', source_name)
-
-	# prepare single item and price for repair parts
-	default_parts_under_warranty_replacement_service_item=frappe.db.get_single_value('DClimate Settings', 'default_parts_under_warranty_replacement_service_item')
-
-
 	def set_missing_values(source, target):
 		customer_default_price_list=frappe.db.get_value('Customer', source.end_customer, 'default_price_list')
+		target.customer=source.end_customer
+		target.dc_service_out_of_warranty_cf=source.name
 		target.set_posting_time=1
 		target.posting_date=getdate(source.completion_date_time)
 		target.posting_time=get_time(source.completion_date_time)
-		target.due_date=today()
 		target.selling_price_list=customer_default_price_list or price_list
-		target.customer=source.end_customer
-		target.dc_service_out_of_warranty_cf=source.name
 
-		if source.parts_detail and len(source.parts_detail)>0:
+		for item in source.parts_detail:
+
 			target.append('items',{
-			"item_code":default_parts_under_warranty_replacement_service_item,
-			"qty" :1,
-			"income_account":after_sales_income_account			
+			"item_code":item.item,
+			"qty" :item.qty,
 			})
 
 		for item in source.job_codes:
@@ -104,24 +97,21 @@ def make_sales_invoice(source_name, target_doc=None):
 			target.append('items',{
 			"item_code":item.job_code,
 			"qty" :item.hours,
-			"income_account":after_sales_income_account	,
 			})
 
 		if len(target.get("items")) == 0:
-			frappe.throw(_("All items have already been Invoiced"))
+			frappe.throw(_("There are no items to make Delivery Note"))
 
-		doc = frappe.get_doc(target)
-		doc.run_method("set_missing_values")
-		doc.run_method("calculate_taxes_and_totals")
+		# target.ignore_pricing_rule = 1
+		target.run_method("set_missing_values")
+		target.run_method("calculate_taxes_and_totals")
 
-	doclist = get_mapped_doc("DC Service Out of Warranty", source_name,	{
+	doclist = get_mapped_doc("DC Service Out of Warranty", source_name, 	{
 		"DC Service Out of Warranty": {
-			"doctype": "Sales Invoice",
-			"field_map": {
-			},
+			"doctype": "Delivery Note",
 			"validation": {
-				"docstatus": ["=", 1],
-			},
+				"docstatus": ["=", 1]
+			}
 		}
 	}, target_doc, set_missing_values,ignore_permissions=True)
 	doclist.save(ignore_permissions=True)
