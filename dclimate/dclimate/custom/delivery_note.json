@@ -221,7 +221,7 @@
    "name": "Delivery Note-dc_service_out_of_warranty_cf",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "DC Service Record",
+   "options": "DC Service Out of Warranty",
    "owner": "Administrator",
    "parent": null,
    "parentfield": null,
