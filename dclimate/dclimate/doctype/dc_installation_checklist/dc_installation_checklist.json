@@ -29,7 +29,7 @@
   }
  ],
  "links": [],
- "modified": "2021-08-06 00:37:57.674911",
+ "modified": "2022-03-24 23:09:28.354416",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Installation Checklist",
@@ -72,16 +72,13 @@
    "write": 1
   },
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
-   "read": 1,
    "report": 1,
    "role": "DC Service Provider",
-   "share": 1,
-   "write": 1
+   "select": 1,
+   "share": 1
   },
   {
    "create": 1,
