@@ -140,3 +140,15 @@ and (
 parts_warranty_expiry_date_cf >= %s or
 labor_warranty_expiry_date_cf >= %s)""", (today(), today()))
 	return data
+
+
+@frappe.whitelist()
+def get_job_codes__for_item_group():
+	job_codes_item_group = frappe.db.get_single_value('DClimate Settings', 'job_codes_item_group')
+	return job_codes_item_group
+
+
+@frappe.whitelist()
+def get_hours_for_job_codes(job_code):
+	hours = frappe.db.get_value('Item', job_code, 'srt_hours_cf')
+	return hours

@@ -101,10 +101,13 @@ doc_events = {
 		"validate": "dclimate.installation_note_hook.check_for_single_serial_no",
 		"on_submit": "dclimate.installation_note_hook.on_submit_of_installation_note",
 		"on_cancel": "dclimate.installation_note_hook.update_heater_info_based_on_installation_note",
-	}	,
+	},
 	"Purchase Invoice": {
 	"validate": "dclimate.purchase_invoice_hook.validate_supplier_against_dc_service_record",
-	}
+	},
+	"Sales Invoice": {
+	"validate": "dclimate.sales_invoice_hook.set_income_account_for_dc_out_of_warranty_service_record",
+	}	
 }
 
 # Scheduled Tasks

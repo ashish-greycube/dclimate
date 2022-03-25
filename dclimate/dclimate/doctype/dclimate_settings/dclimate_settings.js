@@ -6,7 +6,7 @@ frappe.ui.form.on('DClimate Settings', {
 		frm.set_query('after_sales_income_account',()=>{
 			return {
 				filters:{
-					"account_type": ["=",["Income Account"]],
+					"account_type": "Income Account",
 				}
 			}
 		})

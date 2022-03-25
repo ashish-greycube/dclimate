@@ -4,24 +4,33 @@
 frappe.ui.form.on('DC Service Record', {
 	setup: function(frm) {
 		frm.set_query('serial_no', 'dclimate.dclimate.doctype.dc_service_record.dc_service_record.fetch_serial_no');		
-		// frm.set_query('serial_no',()=>{
-		// 	return {
-		// 		filters:{
-		// 			"status": ["in",["Delivered","Inactive"]],
-		// 			"installation__note_cf":["not in",[undefined]]
-		// 		}
-		// 	}
-		// })
-		frappe.db.get_single_value('DClimate Settings', 'job_codes_item_group')
-    .then(job_codes_item_group => {
-				frm.set_query('job_code','job_codes',()=>{
-					return {
-						filters:{
-							"item_group": ['descendants of',job_codes_item_group]
-						}
-					}
-				})				
-    })	
+
+
+		frappe.call('dclimate.dclimate.doctype.dc_service_record.dc_service_record.get_job_codes__for_item_group')
+		.then(r => {
+			console.log(r)
+			let job_codes_item_group=r.message
+							frm.set_query('job_code','job_codes',()=>{
+								return {
+									filters:{
+										"item_group": ['descendants of',job_codes_item_group]
+									}
+								}
+							})				
+	
+		})
+
+
+	// 	frappe.db.get_single_value('DClimate Settings', 'job_codes_item_group')
+    // .then(job_codes_item_group => {
+	// 			frm.set_query('job_code','job_codes',()=>{
+	// 				return {
+	// 					filters:{
+	// 						"item_group": ['descendants of',job_codes_item_group]
+	// 					}
+	// 				}
+	// 			})				
+    // })	
 		frm.set_query("technician", function() {
 			if (frm.doc.service_by_supplier) {
 				return {
@@ -114,3 +123,22 @@ frappe.ui.form.on('DC Service Record', {
 		}
 	}	
 });
+
+frappe.ui.form.on('DC Service Record Job Codes Detail', {
+    job_code:function(frm,cdt,cdn){
+        let row=locals[cdt][cdn]
+        if (row.job_code ) {
+            return frappe.call({
+				method: "dclimate.dclimate.doctype.dc_service_record.dc_service_record.get_hours_for_job_codes",
+				args: {
+					"job_code": row.job_code,
+				},
+				callback: function(r) {
+					if(!r.exc && r.message) {
+						frappe.model.set_value(cdt, cdn, "hours", flt(r.message));
+					}
+				}
+			});          
+        }
+    }
+})

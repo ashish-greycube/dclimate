@@ -64,3 +64,23 @@ frappe.ui.form.on('DC Service Out of Warranty', {
 		}
 	}
 });
+
+
+frappe.ui.form.on('DC Service Record Job Codes Detail', {
+    job_code:function(frm,cdt,cdn){
+        let row=locals[cdt][cdn]
+        if (row.job_code ) {
+            return frappe.call({
+				method: "dclimate.dclimate.doctype.dc_service_record.dc_service_record.get_hours_for_job_codes",
+				args: {
+					"job_code": row.job_code,
+				},
+				callback: function(r) {
+					if(!r.exc && r.message) {
+						frappe.model.set_value(cdt, cdn, "hours", flt(r.message));
+					}
+				}
+			});          
+        }
+    }
+})

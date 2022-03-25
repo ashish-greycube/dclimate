@@ -53,7 +53,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-03-22 00:38:34.196345",
+ "modified": "2022-03-24 23:32:45.793969",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate Settings",
@@ -80,8 +80,8 @@
    "write": 1
   },
   {
-   "read": 1,
-   "role": "DC Service Provider"
+   "role": "DC Service Provider",
+   "select": 1
   },
   {
    "read": 1,
