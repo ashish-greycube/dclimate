@@ -419,11 +419,11 @@
  "links": [
   {
    "group": "Reference",
-   "link_doctype": "Sales Invoice",
+   "link_doctype": "Delivery Note",
    "link_fieldname": "dc_service_out_of_warranty_cf"
   }
  ],
- "modified": "2022-03-22 07:41:31.257454",
+ "modified": "2022-03-30 23:08:06.126536",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Out of Warranty",

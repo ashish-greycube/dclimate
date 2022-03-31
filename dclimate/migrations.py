@@ -12,10 +12,10 @@ def after_migrations():
 		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
 		make_records(import_folder_path,fname)
 
-	if(not frappe.db.exists('Workspace','DClimate')):
-		fname="workspace.json"
-		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
-		make_records(import_folder_path,fname)
+	# if(not frappe.db.exists('Workspace','DClimate')):
+	# 	fname="workspace.json"
+	# 	import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
+	# 	make_records(import_folder_path,fname)
 	update_dashboard_link_for_core_doctype(doctype="Serial No",link_doctype="DC Service Record",link_fieldname="serial_no",group="Reference")	
 	update_dashboard_link_for_core_doctype(doctype="Serial No",link_doctype="DC Service Out of Warranty",link_fieldname="serial_no",group="Reference")	
 
