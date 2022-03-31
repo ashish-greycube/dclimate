@@ -1,5 +1,5 @@
 {
- "cards_label": "DClimate",
+ "cards_label": "DClimate1",
  "category": "Modules",
  "charts": [],
  "creation": "2021-10-04 05:59:36.755147",
@@ -130,7 +130,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-03-30 23:25:08.539562",
+ "modified": "2022-03-30 23:31:42.681611",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate",
