@@ -1,8 +1,8 @@
 {
- "cards_label": "DClimate1",
+ "cards_label": "DClimate",
  "category": "Modules",
  "charts": [],
- "creation": "2021-10-04 05:59:36.755147",
+ "creation": "2022-03-30 23:32:50.878560",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
  "docstatus": 0,
@@ -130,7 +130,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-03-30 23:31:42.681611",
+ "modified": "2022-03-31 00:07:41.875545",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate",
