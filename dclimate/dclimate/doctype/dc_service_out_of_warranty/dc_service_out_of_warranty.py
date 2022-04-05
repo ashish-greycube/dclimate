@@ -65,8 +65,7 @@ class DCServiceOutofWarranty(Document):
 @frappe.validate_and_sanitize_search_inputs
 def fetch_serial_no(doctype, txt, searchfield, start, page_len, filters):
 	data = frappe.db.sql(""" SELECT name,serial_no,item_code FROM `tabSerial No`
-WHERE status in ("Delivered","Inactive")
-and installation__note_cf IS NOT NULL 
+WHERE installation__note_cf IS NOT NULL 
 and parts_warranty_expiry_date_cf < %s 
 and labor_warranty_expiry_date_cf < %s""", (today(), today()))
 	return data
