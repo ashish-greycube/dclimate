@@ -133,12 +133,15 @@ def make_purchase_invoice(source_name, target_doc=None):
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def fetch_serial_no(doctype, txt, searchfield, start, page_len, filters):
-	data = frappe.db.sql(""" SELECT name,serial_no,item_code FROM `tabSerial No`
+	data = frappe.db.sql(""" SELECT name,item_code FROM `tabSerial No`
 WHERE status in ("Delivered","Inactive")
 and installation__note_cf IS NOT NULL 
 and (
 parts_warranty_expiry_date_cf >= %s or
-labor_warranty_expiry_date_cf >= %s)""", (today(), today()))
+labor_warranty_expiry_date_cf >= %s)
+and name like %s
+""", (today(), today(),"%%%s%%" % txt))
+
 	return data
 
 
