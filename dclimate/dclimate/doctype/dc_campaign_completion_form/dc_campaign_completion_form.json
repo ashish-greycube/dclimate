@@ -1,0 +1,371 @@
+{
+ "actions": [],
+ "autoname": "{dc_campaign}-{serial_no}",
+ "creation": "2022-08-04 02:05:53.611676",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dc_campaign",
+  "serial_no",
+  "item_name",
+  "service_by_supplier",
+  "supplier_address",
+  "supplier_address_display",
+  "cb_1",
+  "completion_date_time",
+  "status",
+  "customer",
+  "end_customer",
+  "end_customer_name",
+  "installed_by_supplier",
+  "installation_date",
+  "truck_vin",
+  "truck_number",
+  "warranty_info_section",
+  "parts_warranty_status",
+  "parts_warranty_expiry_date",
+  "heater_hours",
+  "cb_2",
+  "labor_warranty_status",
+  "labor_warranty_expiry_date",
+  "issue_section",
+  "issue_description",
+  "cb_3",
+  "truck_miles",
+  "technician",
+  "repair_details_section",
+  "default_parts_issue_warehouse",
+  "parts_detail",
+  "cb_4",
+  "job_codes",
+  "total_srt_hours",
+  "total_srt_cost",
+  "amended_from",
+  "sb_ref",
+  "material_issue",
+  "purchase_invoice"
+ ],
+ "fields": [
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Serial No",
+   "options": "Serial No",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "serial_no.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Item Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "service_by_supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Service by Supplier",
+   "options": "Supplier"
+  },
+  {
+   "depends_on": "eval:doc.service_by_supplier",
+   "fieldname": "supplier_address",
+   "fieldtype": "Link",
+   "label": "Supplier Address",
+   "options": "Address"
+  },
+  {
+   "depends_on": "eval:doc.supplier_address",
+   "fieldname": "supplier_address_display",
+   "fieldtype": "Small Text",
+   "label": "Supplier Address Display",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "serial_no.customer",
+   "fieldname": "customer",
+   "fieldtype": "Read Only",
+   "label": "Customer"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "serial_no.end_customer_cf",
+   "fieldname": "end_customer",
+   "fieldtype": "Link",
+   "label": "End Customer",
+   "options": "Customer"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "end_customer.customer_name",
+   "fieldname": "end_customer_name",
+   "fieldtype": "Data",
+   "label": "End Customer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "installed_by_supplier",
+   "fieldtype": "Data",
+   "label": "Installed by Supplier",
+   "read_only": 1
+  },
+  {
+   "fieldname": "installation_date",
+   "fieldtype": "Date",
+   "label": "Installation Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "truck_vin",
+   "fieldtype": "Data",
+   "label": "Truck VIN",
+   "read_only": 1
+  },
+  {
+   "fieldname": "truck_number",
+   "fieldtype": "Read Only",
+   "label": "Truck Number"
+  },
+  {
+   "fieldname": "warranty_info_section",
+   "fieldtype": "Section Break",
+   "label": "Warranty Info"
+  },
+  {
+   "fieldname": "parts_warranty_status",
+   "fieldtype": "Select",
+   "label": "Parts Warranty Status",
+   "options": "\nUnder Warranty\nWarranty Expired",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "serial_no.parts_warranty_expiry_date_cf",
+   "fieldname": "parts_warranty_expiry_date",
+   "fieldtype": "Date",
+   "label": "Parts Warranty Expiry Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "serial_no.total_heater_hours_cf",
+   "fieldname": "heater_hours",
+   "fieldtype": "Read Only",
+   "label": "Warranty for Heater Hours",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "labor_warranty_status",
+   "fieldtype": "Select",
+   "label": "Labor Warranty Status",
+   "options": "\nUnder Warranty\nWarranty Expired",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "serial_no.labor_warranty_expiry_date_cf",
+   "fieldname": "labor_warranty_expiry_date",
+   "fieldtype": "Date",
+   "label": "Labor Warranty Expiry Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "issue_section",
+   "fieldtype": "Section Break",
+   "label": "Issue"
+  },
+  {
+   "fieldname": "issue_description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Issue Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "technician",
+   "fieldtype": "Data",
+   "label": "Technician"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "truck_miles",
+   "fieldtype": "Data",
+   "label": "Truck Miles"
+  },
+  {
+   "fieldname": "repair_details_section",
+   "fieldtype": "Section Break",
+   "label": "Repair Details"
+  },
+  {
+   "fieldname": "parts_detail",
+   "fieldtype": "Table",
+   "label": "Parts Detail",
+   "options": "DC Service Record Parts Detail",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_codes",
+   "fieldtype": "Table",
+   "label": "Job Codes",
+   "options": "DC Service Record Job Codes Detail",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_srt_hours",
+   "fieldtype": "Float",
+   "label": "Total SRT Hours",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_srt_cost",
+   "fieldtype": "Currency",
+   "label": "Total SRT Cost",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "DC Campaign Completion Form",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "completion_date_time",
+   "fieldtype": "Datetime",
+   "label": "Completion Date Time"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "DC Campaign Completion Form",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "dc_campaign",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "DC Campaign",
+   "options": "DC Campaign",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "dc_campaign.default_parts_issue_warehouse",
+   "fetch_if_empty": 1,
+   "fieldname": "default_parts_issue_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Parts Issue Warehouse",
+   "mandatory_depends_on": "eval:(doc.parts_detail && doc.parts_detail.length)",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "sb_ref",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "material_issue",
+   "fieldtype": "Link",
+   "label": "Material Issue",
+   "options": "Stock Entry"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice"
+  },
+  {
+   "default": "Open",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nFinished",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [
+  {
+   "group": "Reference",
+   "link_doctype": "Purchase Invoice",
+   "link_fieldname": "dc_service_record_cf"
+  }
+ ],
+ "modified": "2022-08-05 02:26:42.838570",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "DC Campaign Completion Form",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "DC Service Provider",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Support Team",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

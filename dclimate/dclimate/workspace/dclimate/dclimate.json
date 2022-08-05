@@ -115,6 +115,26 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "DC Campaign",
+   "link_to": "DC Campaign",
+   "link_type": "DocType",
+   "onboard": 0,
+   "only_for": "",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "DC Campaign Completion Form",
+   "link_to": "DC Campaign Completion Form",
+   "link_type": "DocType",
+   "onboard": 0,
+   "only_for": "",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Service Training",
    "link_type": "DocType",
    "onboard": 0,
@@ -130,7 +150,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-03-31 00:07:41.875545",
+ "modified": "2022-08-04 02:37:40.414806",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate",

@@ -9,7 +9,8 @@
   "job_codes_item_group",
   "parts_buy_back_margin_price_list",
   "default_parts_under_warranty_replacement_service_item",
-  "after_sales_income_account"
+  "after_sales_income_account",
+  "warranty_repair_account"
  ],
  "fields": [
   {
@@ -48,12 +49,18 @@
    "fieldtype": "Link",
    "label": "After Sales Income Account",
    "options": "Account"
+  },
+  {
+   "fieldname": "warranty_repair_account",
+   "fieldtype": "Link",
+   "label": "Warranty Repair Account",
+   "options": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-03-24 23:32:45.793969",
+ "modified": "2022-08-04 07:36:19.497517",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate Settings",

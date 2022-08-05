@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-08-04 05:23:25.076229",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "serial_no",
+  "dc_campaign_completion_form",
+  "status",
+  "purchase_invoice",
+  "completion_date",
+  "stock_entry"
+ ],
+ "fields": [
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Serial No",
+   "options": "Serial No"
+  },
+  {
+   "fieldname": "dc_campaign_completion_form",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": " DC Campaign Completion Form",
+   "options": "DC Campaign Completion Form"
+  },
+  {
+   "fetch_from": "dc_campaign_completion_form.purchase_invoice",
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completion_date",
+   "fieldtype": "Date",
+   "label": "Completion Date"
+  },
+  {
+   "fetch_from": "dc_campaign_completion_form.material_issue",
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Material Issue",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "dc_campaign_completion_form.status",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Open\nFinished",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-08-05 02:28:31.352015",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "DC Campaign Serial No",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

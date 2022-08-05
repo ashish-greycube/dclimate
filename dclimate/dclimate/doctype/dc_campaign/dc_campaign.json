@@ -1,0 +1,166 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2022-08-04 02:19:03.983216",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "status",
+  "column_break_3",
+  "description",
+  "start_date_time",
+  "supplier",
+  "section_break_7",
+  "default_parts_issue_warehouse",
+  "parts_detail",
+  "column_break_9",
+  "job_codes",
+  "total_srt_hours",
+  "total_srt_cost",
+  "section_break_13",
+  "dc_campaign_serial_no"
+ ],
+ "fields": [
+  {
+   "default": "CAMP-.YY.-.#",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "CAMP-.YY.-.#",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Active\nComplete",
+   "reqd": 1
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "default": "Now",
+   "fieldname": "start_date_time",
+   "fieldtype": "Datetime",
+   "label": "Campaign Start Date Time"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "parts_detail",
+   "fieldtype": "Table",
+   "label": "Parts Detail",
+   "options": "DC Service Record Parts Detail"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_codes",
+   "fieldtype": "Table",
+   "label": "Job Codes",
+   "options": "DC Service Record Job Codes Detail"
+  },
+  {
+   "fieldname": "total_srt_hours",
+   "fieldtype": "Float",
+   "label": "Total SRT Hours"
+  },
+  {
+   "fieldname": "total_srt_cost",
+   "fieldtype": "Currency",
+   "label": "Total SRT Cost"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "dc_campaign_serial_no",
+   "fieldtype": "Table",
+   "label": "DC Campaign Serial No",
+   "options": "DC Campaign Serial No"
+  },
+  {
+   "fieldname": "default_parts_issue_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Parts Issue Warehouse",
+   "options": "Warehouse"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "group": "Reference",
+   "link_doctype": "DC Campaign Completion Form",
+   "link_fieldname": "dc_campaign"
+  }
+ ],
+ "modified": "2022-08-05 02:29:06.417875",
+ "modified_by": "Administrator",
+ "module": "DClimate",
+ "name": "DC Campaign",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Item Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "DC Service Provider",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
