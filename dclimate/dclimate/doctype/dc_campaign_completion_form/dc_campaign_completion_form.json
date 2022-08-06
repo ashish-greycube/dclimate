@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "{dc_campaign}-{serial_no}",
+ "autoname": "format:{dc_campaign}-{serial_no}",
  "creation": "2022-08-04 02:05:53.611676",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -13,8 +13,8 @@
   "supplier_address",
   "supplier_address_display",
   "cb_1",
-  "completion_date_time",
   "status",
+  "completion_date_time",
   "customer",
   "end_customer",
   "end_customer_name",
@@ -41,10 +41,10 @@
   "job_codes",
   "total_srt_hours",
   "total_srt_cost",
-  "amended_from",
   "sb_ref",
   "material_issue",
-  "purchase_invoice"
+  "purchase_invoice",
+  "amended_from"
  ],
  "fields": [
   {
@@ -253,9 +253,11 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.status=='Finished'",
    "fieldname": "completion_date_time",
    "fieldtype": "Datetime",
-   "label": "Completion Date Time"
+   "label": "Completion Date Time",
+   "mandatory_depends_on": "eval:doc.status=='Finished'"
   },
   {
    "fieldname": "amended_from",
@@ -313,14 +315,8 @@
   }
  ],
  "is_submittable": 1,
- "links": [
-  {
-   "group": "Reference",
-   "link_doctype": "Purchase Invoice",
-   "link_fieldname": "dc_service_record_cf"
-  }
- ],
- "modified": "2022-08-05 02:26:42.838570",
+ "links": [],
+ "modified": "2022-08-06 01:32:42.788216",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Completion Form",

@@ -15,6 +15,7 @@
  ],
  "fields": [
   {
+   "columns": 2,
    "fieldname": "serial_no",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -23,6 +24,7 @@
    "options": "Serial No"
   },
   {
+   "columns": 2,
    "fieldname": "dc_campaign_completion_form",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -30,6 +32,7 @@
    "options": "DC Campaign Completion Form"
   },
   {
+   "columns": 2,
    "fetch_from": "dc_campaign_completion_form.purchase_invoice",
    "fieldname": "purchase_invoice",
    "fieldtype": "Link",
@@ -44,14 +47,17 @@
    "label": "Completion Date"
   },
   {
+   "columns": 2,
    "fetch_from": "dc_campaign_completion_form.material_issue",
    "fieldname": "stock_entry",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Material Issue",
    "options": "Stock Entry",
    "read_only": 1
   },
   {
+   "columns": 2,
    "fetch_from": "dc_campaign_completion_form.status",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -64,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-08-05 02:28:31.352015",
+ "modified": "2022-08-06 02:36:29.914635",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Serial No",
