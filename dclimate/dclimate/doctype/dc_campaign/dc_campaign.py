@@ -12,15 +12,27 @@ class DCCampaign(Document):
 	def sync_dc_campaign_completion_form(self):
 		for serial_detail in self.dc_campaign_serial_no:
 			if serial_detail.dc_campaign_completion_form:
-				serial_detail.status=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'status')
-				serial_detail.purchase_invoice=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'purchase_invoice')
-				serial_detail.completion_date=getdate(frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'completion_date_time'))
-				serial_detail.stock_entry=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'material_issue')
+				status=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'status')
+				serial_detail.status=status
+				purchase_invoice=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'purchase_invoice')
+				serial_detail.purchase_invoice=purchase_invoice
+				completion_date_time=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'completion_date_time')
+				serial_detail.completion_date=getdate(completion_date_time)
+				material_issue=frappe.db.get_value('DC Campaign Completion Form', serial_detail.dc_campaign_completion_form, 'material_issue')
+				serial_detail.material_issue=material_issue
+
+				frappe.db.set_value("DC Campaign Serial No", serial_detail.name, "status", status)
+				frappe.db.set_value("DC Campaign Serial No", serial_detail.name, "purchase_invoice", purchase_invoice)
+				frappe.db.set_value("DC Campaign Serial No", serial_detail.name, "completion_date", getdate(completion_date_time))
+				frappe.db.set_value("DC Campaign Serial No", serial_detail.name, "material_issue", material_issue)
+
 			if serial_detail.serial_no and not serial_detail.dc_campaign_completion_form:
 				completion_form, status=self.create_dc_campaign_completion_form(serial_no=serial_detail.serial_no)
 				if completion_form!=0:
 					serial_detail.dc_campaign_completion_form=completion_form	
 					serial_detail.status=status	
+					frappe.db.set_value("DC Campaign Serial No", serial_detail.name, "dc_campaign_completion_form", completion_form)
+					frappe.db.set_value("DC Campaign Serial No", serial_detail.name, "status", status)
 
 	def create_dc_campaign_completion_form(self,serial_no):
 		installation__note_cf=frappe.db.get_value("Serial No", serial_no, 'installation__note_cf')

@@ -9,7 +9,6 @@ frappe.ui.form.on('DC Campaign', {
 			freeze: true,
 			callback: () => {
 				frappe.msgprint(__('DC Campaign Serial No is updated.'));
-				// frm.save()
 			}			
 		});
 	},

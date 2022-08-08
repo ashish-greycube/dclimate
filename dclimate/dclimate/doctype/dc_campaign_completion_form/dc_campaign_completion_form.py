@@ -17,6 +17,7 @@ class DCCampaignCompletionForm(Document):
 		purchase_invoice=make_purchase_invoice(self.name)
 		if purchase_invoice!=0:
 			self.purchase_invoice=purchase_invoice
+			frappe.db.set_value("DC Campaign Completion Form", self.name, "purchase_invoice", purchase_invoice)
 			frappe.msgprint(msg=_("Purchase Invoice {0} is created based on DC Campaign Completion Form {1}"
 			.format(frappe.bold(get_link_to_form("Purchase Invoice",purchase_invoice)),frappe.bold(self.name))),
 			title="Purchase Invoice is created.",
@@ -26,6 +27,7 @@ class DCCampaignCompletionForm(Document):
 
 		if stock_entry!=0:
 			self.material_issue=stock_entry
+			frappe.db.set_value("DC Campaign Completion Form", self.name, "material_issue", stock_entry)
 			frappe.msgprint(msg=_("Material Issue {0} is created based on DC Campaign Completion Form {1}"
 			.format(frappe.bold(get_link_to_form("Stock Entry",stock_entry)),frappe.bold(self.name))),
 			title="Stock Entry is created.",
