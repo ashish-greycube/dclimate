@@ -48,8 +48,8 @@ class DCCampaign(Document):
 		if completion_form.parts_warranty_expiry_date:
 			completion_form.parts_warranty_status='Under Warranty' if (getdate(completion_form.parts_warranty_expiry_date) >=getdate()) else 'Warranty Expired'
 		total_heater_hours_cf=frappe.db.get_value("Serial No", serial_no, 'total_heater_hours_cf') or None
-		if total_heater_hours_cf==0:
-			total_heater_hours_cf=None
+		if total_heater_hours_cf==0 or None:
+			total_heater_hours_cf=''
 		completion_form.heater_hours=total_heater_hours_cf
 		completion_form.labor_warranty_expiry_date=frappe.db.get_value("Serial No", serial_no, 'labor_warranty_expiry_date_cf')
 		if completion_form.labor_warranty_expiry_date:
