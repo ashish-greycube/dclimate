@@ -140,16 +140,15 @@ def make_purchase_invoice(source_name, target_doc=None):
 		# 		"rate":warranty_replacement_service_item_rate				
 		# 		})
 
-		if source.labor_warranty_status=='Under Warranty':
-			for item in source.job_codes:
-				target.append('items',{
-				"item_code":item.job_code,
-				"qty" :item.hours,
-				"rate":per_hour_rate_cf
-				})
+		for item in source.job_codes:
+			target.append('items',{
+			"item_code":item.job_code,
+			"qty" :item.hours,
+			"rate":per_hour_rate_cf
+			})
 
 		if len(target.get("items")) == 0:
-			frappe.throw(_("All items have already been Invoiced/Returned"))
+			frappe.throw(_("No items present. Hence purchase invoice cannot be created."))
 
 		doc = frappe.get_doc(target)
 		doc.bill_no = source.name
