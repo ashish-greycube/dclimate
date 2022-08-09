@@ -100,11 +100,11 @@ def make_purchase_invoice(source_name, target_doc=None):
 
 	doc = frappe.get_doc('DC Campaign Completion Form', source_name)
 	# if doc.parts_warranty_status!='Under Warranty' and doc.labor_warranty_status!='Under Warranty':
-	if doc.labor_warranty_status!='Under Warranty':		
-		frappe.msgprint(msg=_("Labour warranty status is {0}. Hence there are <b>no items</b> to create a Purchase Invoice."
-				.format(frappe.bold(doc.labor_warranty_status)))
-				,title='Purchase Invoice is not created.',indicator="yellow")	
-		return 0	
+	# if doc.labor_warranty_status!='Under Warranty':		
+	# 	frappe.msgprint(msg=_("Labour warranty status is {0}. Hence there are <b>no items</b> to create a Purchase Invoice."
+	# 			.format(frappe.bold(doc.labor_warranty_status)))
+	# 			,title='Purchase Invoice is not created.',indicator="yellow")	
+	# 	return 0	
 
 	# prepare single item and price for repair parts
 	# default_parts_under_warranty_replacement_service_item=frappe.db.get_single_value('DClimate Settings', 'default_parts_under_warranty_replacement_service_item')
