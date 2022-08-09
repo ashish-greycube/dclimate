@@ -41,12 +41,13 @@ class DCCampaignCompletionForm(Document):
 		total_srt_hours=0
 		total_srt_cost=0
 		# supplier_price_list=self.supplier_price_list
-		per_hour_rate_cf = frappe.db.get_value('Supplier', self.service_by_supplier, 'per_hour_rate_cf')
-		if not per_hour_rate_cf:
-			frappe.throw(msg=_('Per hour job rate is not defined for supplier {0}. Please contact DClimate'.format(frappe.bold(get_link_to_form('Supplier',self.service_by_supplier)))),title="Missing per hour job rate for supplier.")
+		if self.service_by_supplier:
+			per_hour_rate_cf = frappe.db.get_value('Supplier', self.service_by_supplier, 'per_hour_rate_cf')
+			if not per_hour_rate_cf:
+				frappe.throw(msg=_('Per hour job rate is not defined for supplier {0}. Please contact DClimate'.format(frappe.bold(get_link_to_form('Supplier',self.service_by_supplier)))),title="Missing per hour job rate for supplier.")
 		if self.job_codes:
 			for job_item in self.job_codes:
-				if job_item.job_code:
+				if job_item.job_code and self.service_by_supplier:
 					total_srt_cost=total_srt_cost+job_item.hours*per_hour_rate_cf
 				if job_item.hours:
 					total_srt_hours=total_srt_hours+job_item.hours
