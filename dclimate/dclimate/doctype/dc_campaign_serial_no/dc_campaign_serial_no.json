@@ -24,7 +24,7 @@
    "options": "Serial No"
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "dc_campaign_completion_form",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -47,7 +47,7 @@
    "label": "Completion Date"
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fetch_from": "dc_campaign_completion_form.status",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -70,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-08-08 02:13:45.995771",
+ "modified": "2022-08-09 00:21:55.981433",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Serial No",
