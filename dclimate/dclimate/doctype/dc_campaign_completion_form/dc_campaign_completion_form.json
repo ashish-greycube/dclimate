@@ -190,6 +190,7 @@
    "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Issue Description",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -316,7 +317,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-06 01:32:42.788216",
+ "modified": "2022-08-08 22:44:27.035120",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Completion Form",

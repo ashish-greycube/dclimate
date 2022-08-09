@@ -12,14 +12,12 @@
   "column_break_3",
   "description",
   "start_date_time",
-  "supplier",
   "section_break_7",
   "default_parts_issue_warehouse",
   "parts_detail",
   "column_break_9",
   "job_codes",
   "total_srt_hours",
-  "total_srt_cost",
   "section_break_13",
   "sync_dc_campaign_completion_form",
   "dc_campaign_serial_no"
@@ -55,12 +53,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "supplier",
-   "fieldtype": "Link",
-   "label": "Supplier",
-   "options": "Supplier"
-  },
-  {
    "default": "Now",
    "fieldname": "start_date_time",
    "fieldtype": "Datetime",
@@ -90,11 +82,6 @@
    "fieldname": "total_srt_hours",
    "fieldtype": "Float",
    "label": "Total SRT Hours"
-  },
-  {
-   "fieldname": "total_srt_cost",
-   "fieldtype": "Currency",
-   "label": "Total SRT Cost"
   },
   {
    "fieldname": "section_break_13",
@@ -127,7 +114,7 @@
    "link_fieldname": "dc_campaign"
   }
  ],
- "modified": "2022-08-06 01:17:57.249817",
+ "modified": "2022-08-08 22:52:11.366644",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign",
