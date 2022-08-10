@@ -13,6 +13,13 @@ frappe.ui.form.on('DC Campaign', {
 		});
 	},
 	setup: function(frm) {
+		frm.set_query('serial_no', 'dc_campaign_serial_no', () => {
+			return {
+				filters: {
+					status:['in',['Active',	'Inactive',	'Delivered','Expired']] 
+				}
+			}
+		})		
 		frappe.call('dclimate.dclimate.doctype.dc_service_record.dc_service_record.get_job_codes__for_item_group')
 		.then(r => {
 			let job_codes_item_group=r.message

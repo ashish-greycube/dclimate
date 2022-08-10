@@ -57,7 +57,7 @@ class DCCampaign(Document):
 		if installation__note and len(installation__note)>0:
 			completion_form.truck_vin=installation__note.truck_vin_cf
 			completion_form.truck_number=installation__note.truck_number_cf
-		completion_form.customer=installation__note.customer or frappe.db.get_value("Serial No", serial_no, 'customer')
+		completion_form.customer=installation__note.customer or frappe.db.get_value("Serial No", serial_no, 'customer') or None
 		for parts in self.parts_detail:
 			cf_parts_child = completion_form.append("parts_detail")
 			cf_parts_child.item = parts.item		
@@ -92,23 +92,10 @@ class DCCampaign(Document):
 				frappe.throw(_("Row {0} : Serial no {1} is duplicate".format(row.idx,frappe.bold(row.serial_no))))
 
 	def calculate_total_srt_values(self):
-		# validate job price is present in supplier price list and calculate total hours and cost
+		# calculate total hours
 		total_srt_hours=0
 		if self.job_codes:
 			for job_item in self.job_codes:
 				if job_item.hours:
 					total_srt_hours=total_srt_hours+job_item.hours
 			self.total_srt_hours=total_srt_hours
-		
-		# validate repair part price is present in buy back price list
-		default_parts_under_warranty_replacement_service_item=frappe.db.get_single_value('DClimate Settings', 'default_parts_under_warranty_replacement_service_item')
-		parts_buy_back_margin_price_list=frappe.db.get_single_value('DClimate Settings', 'parts_buy_back_margin_price_list')
-		warranty_replacement_service_item_rate=0
-		for item in self.parts_detail:
-			replacement_service_item_rate=frappe.db.get_all('Item Price', filters={
-																		'price_list': ['=', parts_buy_back_margin_price_list],
-																		'item_code': ['=', item.item]
-																		}, fields='price_list_rate')
-			if not replacement_service_item_rate:
-				frappe.throw(msg=_("Item price for part no {0} not found in parts buy back price list {1}. Please contact DClimate"
-						.format(frappe.bold(item.item),frappe.bold(parts_buy_back_margin_price_list))),title='Repair part price not found error.')				

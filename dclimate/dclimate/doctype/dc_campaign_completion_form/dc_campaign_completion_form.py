@@ -37,10 +37,9 @@ class DCCampaignCompletionForm(Document):
 		self.calculate_total_srt_values()
 
 	def calculate_total_srt_values(self):
-		# validate job price is present in supplier price list and calculate total hours and cost
+		# validate job price is present in supplier and calculate total hours and cost
 		total_srt_hours=0
 		total_srt_cost=0
-		# supplier_price_list=self.supplier_price_list
 		if self.service_by_supplier:
 			per_hour_rate_cf = frappe.db.get_value('Supplier', self.service_by_supplier, 'per_hour_rate_cf')
 			if not per_hour_rate_cf:
@@ -53,19 +52,7 @@ class DCCampaignCompletionForm(Document):
 					total_srt_hours=total_srt_hours+job_item.hours
 			self.total_srt_hours=total_srt_hours
 			self.total_srt_cost=total_srt_cost
-		
-		# validate repair part price is present in buy back price list
-		default_parts_under_warranty_replacement_service_item=frappe.db.get_single_value('DClimate Settings', 'default_parts_under_warranty_replacement_service_item')
-		parts_buy_back_margin_price_list=frappe.db.get_single_value('DClimate Settings', 'parts_buy_back_margin_price_list')
-		warranty_replacement_service_item_rate=0
-		for item in self.parts_detail:
-			replacement_service_item_rate=frappe.db.get_all('Item Price', filters={
-																		'price_list': ['=', parts_buy_back_margin_price_list],
-																		'item_code': ['=', item.item]
-																		}, fields='price_list_rate')
-			if not replacement_service_item_rate:
-				frappe.throw(msg=_("Item price for part no {0} not found in parts buy back price list {1}. Please contact DClimate"
-						.format(frappe.bold(item.item),frappe.bold(parts_buy_back_margin_price_list))),title='Repair part price not found error.')	
+
 @frappe.whitelist()
 def make_stock_entry(source_name, target_doc=None):
 		doc = frappe.get_doc('DC Campaign Completion Form', source_name)
@@ -96,32 +83,7 @@ def make_stock_entry(source_name, target_doc=None):
 @frappe.whitelist()
 def make_purchase_invoice(source_name, target_doc=None):
 	
-	# from erpnext.accounts.party import get_payment_terms_template
-
 	doc = frappe.get_doc('DC Campaign Completion Form', source_name)
-	# if doc.parts_warranty_status!='Under Warranty' and doc.labor_warranty_status!='Under Warranty':
-	# if doc.labor_warranty_status!='Under Warranty':		
-	# 	frappe.msgprint(msg=_("Labour warranty status is {0}. Hence there are <b>no items</b> to create a Purchase Invoice."
-	# 			.format(frappe.bold(doc.labor_warranty_status)))
-	# 			,title='Purchase Invoice is not created.',indicator="yellow")	
-	# 	return 0	
-
-	# prepare single item and price for repair parts
-	# default_parts_under_warranty_replacement_service_item=frappe.db.get_single_value('DClimate Settings', 'default_parts_under_warranty_replacement_service_item')
-	# parts_buy_back_margin_price_list=frappe.db.get_single_value('DClimate Settings', 'parts_buy_back_margin_price_list')
-	# warranty_replacement_service_item_rate=0
-	# if doc.parts_warranty_status=='Under Warranty':
-	# 	for item in doc.parts_detail:
-	# 		replacement_service_item_rate=frappe.db.get_all('Item Price', filters={
-	# 																	'price_list': ['=', parts_buy_back_margin_price_list],
-	# 																	'item_code': ['=', item.item]
-	# 																	}, fields='price_list_rate')
-	# 		if replacement_service_item_rate:
-	# 			replacement_service_item_rate=replacement_service_item_rate[0].price_list_rate
-	# 		else:
-	# 			frappe.throw(msg=_("Item price for part no {0} not found in parts buy back price list {1}. Please contact DClimate"
-	# 					.format(frappe.bold(item.item),frappe.bold(parts_buy_back_margin_price_list))),title='Repair part price not found error.')
-	# 		warranty_replacement_service_item_rate+=replacement_service_item_rate*item.qty															
 
 	def set_missing_values(source, target):
 		per_hour_rate_cf = frappe.db.get_value('Supplier', source.service_by_supplier, 'per_hour_rate_cf')
@@ -130,15 +92,6 @@ def make_purchase_invoice(source_name, target_doc=None):
 		target.posting_date=getdate(source.completion_date_time)
 		target.posting_time=get_time(source.completion_date_time)
 		target.contact_person=get_default_contact('Supplier',source.service_by_supplier)
-		# target.dc_service_record_cf=source.name
-
-		# if source.parts_detail and len(source.parts_detail)>0:
-		# 	if source.parts_warranty_status=='Under Warranty':
-		# 		target.append('items',{
-		# 		"item_code":default_parts_under_warranty_replacement_service_item,
-		# 		"qty" :1,
-		# 		"rate":warranty_replacement_service_item_rate				
-		# 		})
 
 		for item in source.job_codes:
 			target.append('items',{
@@ -152,8 +105,6 @@ def make_purchase_invoice(source_name, target_doc=None):
 
 		doc = frappe.get_doc(target)
 		doc.bill_no = source.name
-		# doc.payment_terms_template = get_payment_terms_template(source.service_by_supplier, "Supplier",get_default_company())
-		# doc.run_method("onload")
 		doc.run_method("set_missing_values")
 		doc.run_method("calculate_taxes_and_totals")
 
