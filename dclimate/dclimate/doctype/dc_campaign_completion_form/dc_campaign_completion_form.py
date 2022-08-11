@@ -23,15 +23,18 @@ class DCCampaignCompletionForm(Document):
 			title="Purchase Invoice is created.",
 			indicator="green")
 
-		stock_entry=make_stock_entry(self.name)
+		if len(self.get("parts_detail")) == 0:
+			frappe.msgprint(_("No part items present. Hence no stock entry is created."))
+		else:
+			stock_entry=make_stock_entry(self.name)
 
-		if stock_entry!=0:
-			self.material_issue=stock_entry
-			frappe.db.set_value("DC Campaign Completion Form", self.name, "material_issue", stock_entry)
-			frappe.msgprint(msg=_("Material Issue {0} is created based on DC Campaign Completion Form {1}"
-			.format(frappe.bold(get_link_to_form("Stock Entry",stock_entry)),frappe.bold(self.name))),
-			title="Stock Entry is created.",
-			indicator="green")			
+			if stock_entry!=0:
+				self.material_issue=stock_entry
+				frappe.db.set_value("DC Campaign Completion Form", self.name, "material_issue", stock_entry)
+				frappe.msgprint(msg=_("Material Issue {0} is created based on DC Campaign Completion Form {1}"
+				.format(frappe.bold(get_link_to_form("Stock Entry",stock_entry)),frappe.bold(self.name))),
+				title="Stock Entry is created.",
+				indicator="green")			
 
 	def validate(self):
 		self.calculate_total_srt_values()
