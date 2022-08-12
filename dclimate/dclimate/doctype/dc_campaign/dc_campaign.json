@@ -101,6 +101,7 @@
    "options": "Warehouse"
   },
   {
+   "depends_on": "eval:cur_frm.is_new()==undefined",
    "fieldname": "sync_dc_campaign_completion_form",
    "fieldtype": "Button",
    "label": "Sync DC Campaign Completion Form"
@@ -114,7 +115,7 @@
    "link_fieldname": "dc_campaign"
   }
  ],
- "modified": "2022-08-08 22:52:11.366644",
+ "modified": "2022-08-11 22:42:55.579881",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign",

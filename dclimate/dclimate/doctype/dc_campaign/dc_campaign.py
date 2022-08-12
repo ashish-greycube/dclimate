@@ -70,7 +70,10 @@ class DCCampaign(Document):
 		if installation__note and len(installation__note)>0:
 			completion_form.truck_vin=installation__note.truck_vin_cf
 			completion_form.truck_number=installation__note.truck_number_cf
-		completion_form.customer=installation__note.customer or frappe.db.get_value("Serial No", serial_no, 'customer') or None
+		if installation__note!=None:
+			completion_form.customer=installation__note.customer or frappe.db.get_value("Serial No", serial_no, 'customer') or None
+		else:
+			completion_form.customer=frappe.db.get_value("Serial No", serial_no, 'customer') or None
 		for parts in self.parts_detail:
 			cf_parts_child = completion_form.append("parts_detail")
 			cf_parts_child.item = parts.item		
