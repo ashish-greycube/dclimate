@@ -14,17 +14,21 @@ class DCCampaignCompletionForm(Document):
 	def on_submit(self):
 		if not self.completion_date_time:
 			frappe.throw(msg=_("Please make status as <b>Finished</b> and enter <b>Completion Date Time</b> value"),title="Missing Completion Date Time.")	
-		purchase_invoice=make_purchase_invoice(self.name)
-		if purchase_invoice!=0:
-			self.purchase_invoice=purchase_invoice
-			frappe.db.set_value("DC Campaign Completion Form", self.name, "purchase_invoice", purchase_invoice)
-			frappe.msgprint(msg=_("Purchase Invoice {0} is created based on DC Campaign Completion Form {1}"
-			.format(frappe.bold(get_link_to_form("Purchase Invoice",purchase_invoice)),frappe.bold(self.name))),
-			title="Purchase Invoice is created.",
-			indicator="green")
+
+		if len(self.get("job_codes")) == 0:
+			frappe.msgprint(_("No Job Codes exists , hence Purchase Invoice <b>not</b> created."))			
+		else:
+			purchase_invoice=make_purchase_invoice(self.name)
+			if purchase_invoice!=0:
+				self.purchase_invoice=purchase_invoice
+				frappe.db.set_value("DC Campaign Completion Form", self.name, "purchase_invoice", purchase_invoice)
+				frappe.msgprint(msg=_("Purchase Invoice {0} is created based on DC Campaign Completion Form {1}"
+				.format(frappe.bold(get_link_to_form("Purchase Invoice",purchase_invoice)),frappe.bold(self.name))),
+				title="Purchase Invoice is created.",
+				indicator="green")
 
 		if len(self.get("parts_detail")) == 0:
-			frappe.msgprint(_("No part items present. Hence no stock entry is created."))
+			frappe.msgprint(_("No Parts Detail exists, hence Stock Entry <b>not</b> created."))
 		else:
 			stock_entry=make_stock_entry(self.name)
 
@@ -102,9 +106,6 @@ def make_purchase_invoice(source_name, target_doc=None):
 			"qty" :item.hours,
 			"rate":per_hour_rate_cf
 			})
-
-		if len(target.get("items")) == 0:
-			frappe.throw(_("No items present. Hence purchase invoice cannot be created."))
 
 		doc = frappe.get_doc(target)
 		doc.bill_no = source.name
