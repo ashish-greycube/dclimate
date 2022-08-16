@@ -53,3 +53,20 @@ frappe.ui.form.on('DC Service Record Job Codes Detail', {
         }
     }
 })
+
+frappe.ui.form.on('DC Campaign Serial No', {
+    before_dc_campaign_serial_no_remove:function(frm,cdt,cdn){
+        let row=locals[cdt][cdn]
+        if (row.dc_campaign_completion_form ) {
+            return frappe.db.get_value('DC Campaign Completion Form', row.dc_campaign_completion_form, ['status', 'docstatus'])
+			.then(r => {
+				let values = r.message;
+				console.log(values.status, values.docstatus)
+				if (values.docstatus==0 && values.status=='Finished') {
+					frappe.throw(__('Row #{0} : DC Campaign Completion Form <b>{1}</b>, status is <b>{2}</b> and in draft. Hence cannot remove it.',[row.idx,row.dc_campaign_completion_form,values.status]))
+					
+				}
+			})     
+        }
+    }
+})
