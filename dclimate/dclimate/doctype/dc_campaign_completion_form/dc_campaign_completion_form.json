@@ -254,11 +254,10 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.status=='Finished'",
    "fieldname": "completion_date_time",
    "fieldtype": "Datetime",
    "label": "Completion Date Time",
-   "mandatory_depends_on": "eval:doc.status=='Finished'"
+   "mandatory_depends_on": "eval:doc.docstatus == 1"
   },
   {
    "fieldname": "amended_from",
@@ -321,7 +320,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-16 23:37:30.645486",
+ "modified": "2022-08-17 04:04:35.442938",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Completion Form",
