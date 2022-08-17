@@ -14,7 +14,7 @@ class DCCampaignCompletionForm(Document):
 	def on_submit(self):
 		if not self.completion_date_time:
 			frappe.throw(msg=_("Please enter <b>Completion Date Time</b> value"),title="Missing Completion Date Time.")	
-		self.status='In Progress'
+		frappe.db.set_value("DC Campaign Completion Form", self.name, 'status', 'In Progress')
 		if len(self.get("job_codes")) == 0:
 			frappe.msgprint(_("No Job Codes exists , hence Purchase Invoice <b>not</b> created."))			
 		else:
