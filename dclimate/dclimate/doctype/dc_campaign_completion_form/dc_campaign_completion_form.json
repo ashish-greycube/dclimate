@@ -307,6 +307,7 @@
    "options": "Purchase Invoice"
   },
   {
+   "allow_on_submit": 1,
    "default": "Open",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -314,12 +315,13 @@
    "in_standard_filter": 1,
    "label": "Status",
    "options": "Open\nIn Progress\nFinished",
+   "read_only": 1,
    "reqd": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-16 23:15:18.787765",
+ "modified": "2022-08-16 23:37:30.645486",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Completion Form",
