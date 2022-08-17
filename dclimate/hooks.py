@@ -104,10 +104,14 @@ doc_events = {
 	},
 	"Purchase Invoice": {
 	"validate": "dclimate.purchase_invoice_hook.validate_supplier_against_dc_service_record",
+	"on_submit": "dclimate.dclimate.doctype.dc_campaign_completion_form.dc_campaign_completion_form.change_dc_campaign_completion_status_to_finished"
 	},
 	"Sales Invoice": {
 	"validate": "dclimate.sales_invoice_hook.set_income_account_for_dc_out_of_warranty_service_record",
-	}	
+	},
+	"Stock Entry": {
+	"on_submit": "dclimate.dclimate.doctype.dc_campaign_completion_form.dc_campaign_completion_form.change_dc_campaign_completion_status_to_finished",
+	}		
 }
 
 # Scheduled Tasks

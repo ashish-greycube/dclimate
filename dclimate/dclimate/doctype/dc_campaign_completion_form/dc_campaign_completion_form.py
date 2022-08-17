@@ -13,8 +13,8 @@ from frappe.utils import getdate, cstr, flt
 class DCCampaignCompletionForm(Document):
 	def on_submit(self):
 		if not self.completion_date_time:
-			frappe.throw(msg=_("Please make status as <b>Finished</b> and enter <b>Completion Date Time</b> value"),title="Missing Completion Date Time.")	
-
+			frappe.throw(msg=_("Please enter <b>Completion Date Time</b> value"),title="Missing Completion Date Time.")	
+		self.status='In Progress'
 		if len(self.get("job_codes")) == 0:
 			frappe.msgprint(_("No Job Codes exists , hence Purchase Invoice <b>not</b> created."))			
 		else:
@@ -127,3 +127,63 @@ def make_purchase_invoice(source_name, target_doc=None):
 	}, target_doc, set_missing_values,ignore_permissions=True)
 	doclist.save(ignore_permissions=True)
 	return doclist.name		
+
+def change_dc_campaign_completion_status_to_finished(self,method):
+	if self.doctype=='Purchase Invoice':
+		dc_campaign_list=frappe.db.get_list('DC Campaign Completion Form', 
+										filters={'purchase_invoice': ['=', self.name]},
+										fields=['name','status', 'purchase_invoice','material_issue'])
+		if len(dc_campaign_list)>0:
+			dc_campaign_name=dc_campaign_list[0].name
+			dc_campaign_status=dc_campaign_list[0].status
+			if dc_campaign_status!='Finished':
+				dc_campaign_material_issue=dc_campaign_list[0].get('material_issue') or None
+				if dc_campaign_material_issue:
+					material_issue_docstatus = frappe.db.get_value('Stock Entry', dc_campaign_material_issue, 'docstatus')	
+					if material_issue_docstatus==1:
+						frappe.db.set_value('DC Campaign Completion Form', dc_campaign_name, 'status', 'Finished')		
+						frappe.msgprint(msg=_("DC Campaign Completion Form {0} status is changed to <b>Finished</b>. <br> As associated Purchase Invoice {1} and Material Issue {2} are in submitted state."
+						.format(frappe.bold(get_link_to_form("DC Campaign Completion Form",dc_campaign_name)),frappe.bold(self.name),frappe.bold(dc_campaign_material_issue))),
+						title="DC Campaign Completion Form status changed.",
+						indicator="green")
+					else:
+						frappe.msgprint(msg=_("DC Campaign Completion Form {0} status is not changed to <b>Finished</b>. <br> As associated Material Issue {1} is not in submitted state."
+						.format(frappe.bold(get_link_to_form("DC Campaign Completion Form",dc_campaign_name)),frappe.bold(dc_campaign_material_issue))),
+						title="DC Campaign Completion Form status not changed.",
+						indicator="orange")
+				else:
+					frappe.db.set_value('DC Campaign Completion Form', dc_campaign_name, 'status', 'Finished')		
+					frappe.msgprint(msg=_("DC Campaign Completion Form {0} status is changed to <b>Finished</b>. <br> As associated Purchase Invoice {1} is in submitted state."
+					.format(frappe.bold(get_link_to_form("DC Campaign Completion Form",dc_campaign_name)),frappe.bold(self.name))),
+					title="DC Campaign Completion Form status changed.",
+					indicator="green")							
+	elif self.doctype=='Stock Entry':
+		dc_campaign_list=frappe.db.get_list('DC Campaign Completion Form', 
+										filters={'material_issue': ['=', self.name]},
+										fields=['name','status', 'purchase_invoice','material_issue'])
+		if len(dc_campaign_list)>0:
+			dc_campaign_name=dc_campaign_list[0].name
+			dc_campaign_status=dc_campaign_list[0].status
+			if dc_campaign_status!='Finished':
+				dc_campaign_purchase_invoice=dc_campaign_list[0].get('purchase_invoice') or None
+				if dc_campaign_purchase_invoice:
+					purchase_invoice_docstatus = frappe.db.get_value('Purchase Invoice', dc_campaign_purchase_invoice, 'docstatus')	
+					if purchase_invoice_docstatus==1:
+						frappe.db.set_value('DC Campaign Completion Form', dc_campaign_name, 'status', 'Finished')		
+						frappe.msgprint(msg=_("DC Campaign Completion Form {0} status is changed to <b>Finished</b>. <br> As associated Purchase Invoice {1} and Material Issue {2} are in submitted state."
+						.format(frappe.bold(get_link_to_form("DC Campaign Completion Form",dc_campaign_name)),frappe.bold(self.name),frappe.bold(dc_campaign_purchase_invoice))),
+						title="DC Campaign Completion Form status changed.",
+						indicator="green")
+					else:
+						frappe.msgprint(msg=_("DC Campaign Completion Form {0} status is not changed to <b>Finished</b>. <br> As associated Purchase Invoice {1} is not in submitted state."
+						.format(frappe.bold(get_link_to_form("DC Campaign Completion Form",dc_campaign_name)),frappe.bold(dc_campaign_purchase_invoice))),
+						title="DC Campaign Completion Form status not changed.",
+						indicator="orange")
+				else:
+					#  This case will not happen
+					frappe.db.set_value('DC Campaign Completion Form', dc_campaign_name, 'status', 'Finished')		
+					frappe.msgprint(msg=_("DC Campaign Completion Form {0} status is changed to <b>Finished</b>. <br> As associated Material Issue {1} is in submitted state."
+					.format(frappe.bold(get_link_to_form("DC Campaign Completion Form",dc_campaign_name)),frappe.bold(self.name))),
+					title="DC Campaign Completion Form status changed.",
+					indicator="green")
+	

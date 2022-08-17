@@ -62,8 +62,8 @@ frappe.ui.form.on('DC Campaign Serial No', {
 			.then(r => {
 				let values = r.message;
 				console.log(values.status, values.docstatus)
-				if (values.docstatus==0 && values.status=='Finished') {
-					frappe.throw(__('Row #{0} : DC Campaign Completion Form <b>{1}</b>, status is <b>{2}</b> and in draft. Hence cannot remove it.',[row.idx,row.dc_campaign_completion_form,values.status]))
+				if (values.docstatus==1) {
+					frappe.throw(__('Row #{0} : DC Campaign Completion Form <b>{1}</b>, docstatus is <b>submitted.</b> Hence cannot remove it.',[row.idx,row.dc_campaign_completion_form]))
 					
 				}
 			})     
