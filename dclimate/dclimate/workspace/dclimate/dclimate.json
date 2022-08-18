@@ -148,9 +148,26 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Revenue vs COGS Report",
+   "link_to": "Revenue vs COGS Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-08-04 02:37:40.414806",
+ "modified": "2022-08-18 08:58:13.534154",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate",
