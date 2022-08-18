@@ -13,6 +13,13 @@ frappe.ui.form.on('DC Campaign', {
 		});
 	},
 	setup: function(frm) {
+		frm.set_query('item', 'parts_detail', () => {
+			return {
+				filters: {
+					is_stock_item:1
+				}
+			}
+		})		
 		frm.set_query('serial_no', 'dc_campaign_serial_no', () => {
 			return {
 				filters: {
