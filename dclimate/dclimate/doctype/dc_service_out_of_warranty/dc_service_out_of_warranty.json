@@ -22,6 +22,7 @@
   "parts_warranty_status",
   "parts_warranty_expiry_date",
   "heater_hours",
+  "total_warranty_hours",
   "cb_2",
   "labor_warranty_status",
   "labor_warranty_expiry_date",
@@ -413,6 +414,12 @@
    "options": "DC Service Out of Warranty",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fetch_from": "serial_no.total_warranty_hours_cf",
+   "fieldname": "total_warranty_hours",
+   "fieldtype": "Read Only",
+   "label": "Total Warranty Hours"
   }
  ],
  "is_submittable": 1,
@@ -423,7 +430,7 @@
    "link_fieldname": "dc_service_out_of_warranty_cf"
   }
  ],
- "modified": "2022-03-30 23:08:06.126536",
+ "modified": "2022-08-22 00:05:05.111131",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Out of Warranty",

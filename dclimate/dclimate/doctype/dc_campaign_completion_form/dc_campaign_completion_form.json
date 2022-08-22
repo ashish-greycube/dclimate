@@ -26,6 +26,7 @@
   "parts_warranty_status",
   "parts_warranty_expiry_date",
   "heater_hours",
+  "total_warranty_hours",
   "cb_2",
   "labor_warranty_status",
   "labor_warranty_expiry_date",
@@ -315,11 +316,18 @@
    "options": "Open\nIn Progress\nFinished",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fetch_from": "serial_no.total_warranty_hours_cf",
+   "fieldname": "total_warranty_hours",
+   "fieldtype": "Int",
+   "label": "Total Warranty Hours",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-17 06:00:21.944652",
+ "modified": "2022-08-22 00:06:24.394642",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Completion Form",
