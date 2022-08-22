@@ -11,6 +11,7 @@
   "parts_warranty_years",
   "labor_warranty_years",
   "total_hours",
+  "total_warranty_hours",
   "description"
  ],
  "fields": [
@@ -54,10 +55,15 @@
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description"
+  },
+  {
+   "fieldname": "total_warranty_hours",
+   "fieldtype": "Int",
+   "label": "Total Warranty Hours"
   }
  ],
  "links": [],
- "modified": "2021-06-28 10:27:34.075302",
+ "modified": "2022-08-21 23:44:45.113880",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Warranty Type",

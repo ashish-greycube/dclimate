@@ -25,6 +25,7 @@
   "parts_warranty_status",
   "parts_warranty_expiry_date",
   "heater_hours",
+  "total_warranty_hours",
   "cb_2",
   "labor_warranty_status",
   "labor_warranty_expiry_date",
@@ -438,6 +439,12 @@
    "fieldtype": "Data",
    "label": "End Customer Name",
    "read_only": 1
+  },
+  {
+   "fetch_from": "serial_no.total_warranty_hours_cf",
+   "fieldname": "total_warranty_hours",
+   "fieldtype": "Read Only",
+   "label": "Total Warranty Hours"
   }
  ],
  "is_submittable": 1,
@@ -448,7 +455,7 @@
    "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2022-02-25 01:15:20.835230",
+ "modified": "2022-08-21 23:46:58.852878",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
