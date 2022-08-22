@@ -160,7 +160,7 @@
    "fetch_from": "serial_no.total_heater_hours_cf",
    "fieldname": "heater_hours",
    "fieldtype": "Int",
-   "label": "Warranty for Heater Hours",
+   "label": "Total Heater Hours",
    "read_only": 1
   },
   {
@@ -327,7 +327,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-22 00:06:24.394642",
+ "modified": "2022-08-22 00:17:17.659825",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Campaign Completion Form",
