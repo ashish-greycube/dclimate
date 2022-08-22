@@ -102,6 +102,7 @@ def remove_warranty_details_from_serial_no(serial_no):
     serial_no=frappe.get_doc('Serial No',serial_no)
     serial_no.parts_warranty_expiry_date_cf=None
     serial_no.labor_warranty_expiry_date_cf=None
+    serial_no.total_warranty_hours_cf=None
     serial_no.total_heater_hours_cf=None
     serial_no.save(ignore_permissions=True)
 
@@ -129,5 +130,13 @@ def update_warranty_details_in_serial_no(posting_date,serial_no,warranty_type):
                 .format(serial_no.name,serial_no.total_heater_hours_cf)),title='Existing value error')
         else:
             serial_no.total_heater_hours_cf=warranty_type.total_hours
+
+    if warranty_type.total_warranty_hours>0:
+        if serial_no.total_warranty_hours_cf!=0:
+            frappe.throw(msg=_('{0} serial no couldnot be updated, as it has existing value {1} for total warranty heater hours' \
+                .format(serial_no.name,serial_no.total_warranty_hours_cf)),title='Existing value error')
+        else:
+            serial_no.total_warranty_hours_cf=warranty_type.total_warranty_hours
+
     serial_no.save(ignore_permissions=True)
 
