@@ -2,6 +2,9 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('DC Campaign', {
+	refresh: function(frm) {
+		$('*[data-fieldname="dc_campaign_serial_no"]').find('.grid-remove-all-rows').hide()
+	},
 	sync_dc_campaign_completion_form:function(frm) {
 		frm.call({
 			doc: frm.doc,
