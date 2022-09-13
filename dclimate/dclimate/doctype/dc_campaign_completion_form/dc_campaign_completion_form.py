@@ -11,34 +11,48 @@ from erpnext import get_company_currency, get_default_company
 from frappe.utils import getdate, cstr, flt
 
 class DCCampaignCompletionForm(Document):
-	def on_submit(self):
+	def before_submit(self):
 		if not self.completion_date_time:
 			frappe.throw(msg=_("Please enter <b>Completion Date Time</b> value"),title="Missing Completion Date Time.")	
-		frappe.db.set_value("DC Campaign Completion Form", self.name, 'status', 'In Progress')
+		
+		if self.purchase_invoice or self.material_issue:
+			self.status='Finished'
+		else:
+			self.status='In Progress'
+
+	def on_submit(self):
+
 		if len(self.get("job_codes")) == 0:
 			frappe.msgprint(_("No Job Codes exists , hence Purchase Invoice <b>not</b> created."))			
 		else:
-			purchase_invoice=make_purchase_invoice(self.name)
-			if purchase_invoice!=0:
-				self.purchase_invoice=purchase_invoice
-				frappe.db.set_value("DC Campaign Completion Form", self.name, "purchase_invoice", purchase_invoice)
-				frappe.msgprint(msg=_("Purchase Invoice {0} is created based on DC Campaign Completion Form {1}"
-				.format(frappe.bold(get_link_to_form("Purchase Invoice",purchase_invoice)),frappe.bold(self.name))),
-				title="Purchase Invoice is created.",
-				indicator="green")
+			if not self.purchase_invoice:
+				purchase_invoice=make_purchase_invoice(self.name)
+				if purchase_invoice!=0:
+					self.purchase_invoice=purchase_invoice
+					frappe.db.set_value("DC Campaign Completion Form", self.name, "purchase_invoice", purchase_invoice)
+					frappe.msgprint(msg=_("Purchase Invoice {0} is created based on DC Campaign Completion Form {1}"
+					.format(frappe.bold(get_link_to_form("Purchase Invoice",purchase_invoice)),frappe.bold(self.name))),
+					title="Purchase Invoice is created.",
+					indicator="green")
 
 		if len(self.get("parts_detail")) == 0:
 			frappe.msgprint(_("No Parts Detail exists, hence Stock Entry <b>not</b> created."))
 		else:
-			stock_entry=make_stock_entry(self.name)
+			if not self.material_issue:
+				stock_entry=make_stock_entry(self.name)
 
-			if stock_entry!=0:
-				self.material_issue=stock_entry
-				frappe.db.set_value("DC Campaign Completion Form", self.name, "material_issue", stock_entry)
-				frappe.msgprint(msg=_("Material Issue {0} is created based on DC Campaign Completion Form {1}"
-				.format(frappe.bold(get_link_to_form("Stock Entry",stock_entry)),frappe.bold(self.name))),
-				title="Stock Entry is created.",
-				indicator="green")			
+				if stock_entry!=0:
+					self.material_issue=stock_entry
+					frappe.db.set_value("DC Campaign Completion Form", self.name, "material_issue", stock_entry)
+					frappe.msgprint(msg=_("Material Issue {0} is created based on DC Campaign Completion Form {1}"
+					.format(frappe.bold(get_link_to_form("Stock Entry",stock_entry)),frappe.bold(self.name))),
+					title="Stock Entry is created.",
+					indicator="green")		
+
+		pi=frappe.db.get_value("DC Campaign Completion Form", self.name, "purchase_invoice")
+		mi=frappe.db.get_value("DC Campaign Completion Form", self.name, "material_issue")
+		if pi or mi:
+			frappe.db.set_value("DC Campaign Completion Form", self.name, 'status', 'Finished')
 
 	def validate(self):
 		self.calculate_total_srt_values()
