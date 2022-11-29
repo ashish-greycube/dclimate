@@ -11,11 +11,11 @@ def after_migrations():
 		fname="role.json"
 		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
 		make_records(import_folder_path,fname)
-
-	# if(not frappe.db.exists('Workspace','DClimate')):
-	# 	fname="workspace.json"
-	# 	import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
-	# 	make_records(import_folder_path,fname)
+	print(frappe.db.exists('Workspace','DClimate14'),frappe.__version__.split('.')[0])
+	if(frappe.db.exists('Workspace','DClimate14')==None) and frappe.__version__.split('.')[0]=='14' :
+		fname="workspace.json"
+		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
+		make_records(import_folder_path,fname)
 	update_dashboard_link_for_core_doctype(doctype="Serial No",link_doctype="DC Service Record",link_fieldname="serial_no",group="Reference")	
 	update_dashboard_link_for_core_doctype(doctype="Serial No",link_doctype="DC Service Out of Warranty",link_fieldname="serial_no",group="Reference")
 	update_dashboard_link_for_core_doctype(doctype="Serial No",link_doctype="DC Campaign Completion Form",link_fieldname="serial_no",group="Reference")	
