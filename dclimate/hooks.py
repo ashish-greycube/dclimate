@@ -193,8 +193,8 @@ user_data_fields = [
 fixtures = [
       {
         "dt": "Workspace", 
-        "filters": [["name", "in", ["Dclimate14"]]]
-      },
+        "filters": [["name", "in", ["Dclimate"]]]
+      },  
       {
         "dt": "Role", 
         "filters": [["name", "in", ["DC Service Provider"]]]

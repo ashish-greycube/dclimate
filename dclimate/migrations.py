@@ -11,8 +11,7 @@ def after_migrations():
 		fname="role.json"
 		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
 		make_records(import_folder_path,fname)
-	print(frappe.db.exists('Workspace','DClimate14'),frappe.__version__.split('.')[0])
-	if(frappe.db.exists('Workspace','DClimate14')==None) and frappe.__version__.split('.')[0]=='14' :
+	if(frappe.db.exists('Workspace','DClimate')==None) and frappe.__version__.split('.')[0]=='14' :
 		fname="workspace.json"
 		import_folder_path="{bench_path}/{app_folder_path}".format(bench_path=get_bench_path(),app_folder_path='/apps/dclimate/dclimate/import_records')
 		make_records(import_folder_path,fname)
