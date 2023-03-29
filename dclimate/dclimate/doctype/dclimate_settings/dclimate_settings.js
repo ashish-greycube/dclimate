@@ -10,5 +10,12 @@ frappe.ui.form.on('DClimate Settings', {
 				}
 			}
 		})
+		frm.set_query('after_sales_cogs_account',()=>{
+			return {
+				filters:{
+					"account_type": "Cost of Goods Sold",
+				}
+			}
+		})		
 	}
 });

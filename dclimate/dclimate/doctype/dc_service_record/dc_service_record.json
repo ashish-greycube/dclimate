@@ -453,12 +453,18 @@
    "group": "Reference",
    "link_doctype": "Purchase Invoice",
    "link_fieldname": "dc_service_record_cf"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Delivery Note",
+   "link_fieldname": "dc_service_record_cf"
   }
  ],
- "modified": "2022-08-21 23:46:58.852878",
+ "modified": "2023-03-29 03:51:29.700229",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DC Service Record",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -502,5 +508,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

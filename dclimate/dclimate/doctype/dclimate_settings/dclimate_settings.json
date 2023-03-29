@@ -10,6 +10,7 @@
   "parts_buy_back_margin_price_list",
   "default_parts_under_warranty_replacement_service_item",
   "after_sales_income_account",
+  "after_sales_cogs_account",
   "warranty_repair_account"
  ],
  "fields": [
@@ -55,12 +56,19 @@
    "fieldtype": "Link",
    "label": "Warranty Repair Account",
    "options": "Account"
+  },
+  {
+   "fieldname": "after_sales_cogs_account",
+   "fieldtype": "Link",
+   "label": "After Sales COGS Account",
+   "options": "Account",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-04 07:36:19.497517",
+ "modified": "2023-03-29 04:05:08.446523",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate Settings",
@@ -97,5 +105,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

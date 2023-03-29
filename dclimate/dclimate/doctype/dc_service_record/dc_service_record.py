@@ -8,6 +8,7 @@ from frappe import _
 from erpnext import get_default_company
 from frappe.contacts.doctype.contact.contact import get_default_contact
 from frappe.utils import today
+from frappe.model.mapper import get_mapped_doc
 
 class DCServiceRecord(Document):
 	def on_submit(self):
@@ -19,6 +20,13 @@ class DCServiceRecord(Document):
 			.format(frappe.bold(get_link_to_form("Purchase Invoice",purchase_invoice)),frappe.bold(self.name))),
 			title="Purchase Invoice is created.",
 			indicator="green")
+		if self.parts_warranty_status=='Under Warranty':
+			delivery_note=make_delivery_note(self.name)		
+			if delivery_note!=0:
+				frappe.msgprint(msg=_("Delivery Note {0} is created based on DC Service Out of Warranty {1}"
+				.format(frappe.bold(get_link_to_form("Delivery Note",delivery_note)),frappe.bold(self.name))),
+				title="Delivery Note is created.",
+				indicator="green")			
 
 	def validate(self):
 		# validate job price is present in supplier price list and calculate total hours and cost
@@ -155,3 +163,43 @@ def get_job_codes__for_item_group():
 def get_hours_for_job_codes(job_code):
 	hours = frappe.db.get_value('Item', job_code, 'srt_hours_cf')
 	return hours
+
+
+@frappe.whitelist()
+def make_delivery_note(source_name, target_doc=None):
+	after_sales_cogs_account = frappe.db.get_single_value('DClimate Settings', 'after_sales_cogs_account')
+	price_list = (frappe.db.get_single_value('Selling Settings', 'selling_price_list') or frappe.db.get_value('Price List', _('Standard Selling')))		
+
+	def set_missing_values(source, target):
+		# customer_default_price_list=frappe.db.get_value('Customer', source.end_customer, 'default_price_list')
+		target.customer=source.customer
+		target.end_customer_cf=source.end_customer
+		target.dc_service_record_cf=source.name
+		target.set_posting_time=1
+		target.posting_date=getdate(source.completion_date_time)
+		target.posting_time=get_time(source.completion_date_time)
+		target.selling_price_list=price_list
+		for item in source.parts_detail:
+			target.append('items',{
+			"item_code":item.item,
+			"qty" :item.qty,
+			"rate":0,
+			"expense_account":after_sales_cogs_account
+			})
+
+		if len(target.get("items")) == 0:
+			frappe.throw(_("There are no items to make Delivery Note"))
+		# target.ignore_pricing_rule = 1
+		target.run_method("set_missing_values")
+		target.run_method("calculate_taxes_and_totals")
+
+	doclist = get_mapped_doc("DC Service Record", source_name, 	{
+		"DC Service Record": {
+			"doctype": "Delivery Note",
+			"validation": {
+				"docstatus": ["=", 1]
+			}
+		}
+	}, target_doc, set_missing_values,ignore_permissions=True)
+	doclist.save(ignore_permissions=True)
+	return doclist.name
