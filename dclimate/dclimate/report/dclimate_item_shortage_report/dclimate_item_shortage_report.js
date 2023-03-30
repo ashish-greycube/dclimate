@@ -28,7 +28,14 @@ frappe.query_reports["DClimate Item Shortage Report"] = {
                   "fieldtype": "Select",
                   "options": ["All", "Only Shortage"],
                   "default": "All",
-            }
+            },
+            {
+                  "fieldname": "disabled",
+                  "label": 'Disabled',
+                  "fieldtype": "Check"
+            }          
+            
+
       ],
       formatter: function (value, row, column, data, default_formatter) {
             value = default_formatter(value, row, column, data);

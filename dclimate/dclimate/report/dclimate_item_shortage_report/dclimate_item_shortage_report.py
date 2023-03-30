@@ -69,13 +69,13 @@ def execute(filters=None):
 	fields_item = ["item_code","item_name","item_group",	"safety_stock",	]
 	fields_warehouse = ["item_code","warehouse","actual_qty"]
 
-	for field in ["item_code", "item_group"]:
+	for field in ["item_code", "item_group","disabled"]:
 		if filters.get(field):
-			query_filters[field] = ("in", filters.get(field))
+			query_filters[field] = ("=", filters.get(field))
 
 	for field in ["item_code","warehouse"]:
 		if filters.get(field):
-			query_filters_warehouse[field] = ("in", filters.get(field))
+			query_filters_warehouse[field] = ("=", filters.get(field))
 
 	items = frappe.get_all("Item", fields=fields_item, filters=query_filters)
 	bins = frappe.get_all("Bin", fields=fields_warehouse, filters=query_filters_warehouse)
