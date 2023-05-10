@@ -107,7 +107,8 @@ doc_events = {
 	"on_submit": "dclimate.dclimate.doctype.dc_campaign_completion_form.dc_campaign_completion_form.change_dc_campaign_completion_status_to_finished"
 	},
 	"Sales Invoice": {
-	"validate": "dclimate.sales_invoice_hook.set_income_account_for_dc_out_of_warranty_service_record",
+	"validate": ["dclimate.sales_invoice_hook.set_income_account_for_dc_out_of_warranty_service_record",
+              	 "dclimate.sales_invoice_hook.synch_serial_no_in_items_and_installation_detail_tables" ]
 	},
 	"Stock Entry": {
 	"on_submit": "dclimate.dclimate.doctype.dc_campaign_completion_form.dc_campaign_completion_form.change_dc_campaign_completion_status_to_finished",
