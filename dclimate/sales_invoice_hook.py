@@ -12,8 +12,11 @@ def set_income_account_for_dc_out_of_warranty_service_record(self,method):
             frappe.msgprint(msg=_("Income Account {0} is set in Sales Invoice Items".format(frappe.bold(after_sales_income_account))),title="Delivery Note is created.",indicator="green",alert=1)            
 
 def synch_serial_no_in_items_and_installation_detail_tables(self,method):
+    # serialized_item_found=False
+    ac_serial_no_matched=False
     to_remove = []
     si_item_serial_nos=[]
+
     for item in self.get('items'):
         if item.delivery_note:
             si_serial_nos = get_serial_nos(item.serial_no)
@@ -23,8 +26,8 @@ def synch_serial_no_in_items_and_installation_detail_tables(self,method):
 
     if len(si_item_serial_nos)>0:
         for installation_row in self.get('installation_detail_ct'):
-            if installation_row.ac_serial_no in si_item_serial_nos:   
-                pass
+            if installation_row.ac_serial_no in si_item_serial_nos: 
+                ac_serial_no_matched=True  
             else:    
                 to_remove.append(installation_row)
                 frappe.msgprint(msg=_("Row {0} : with serial no {1}  is removed".format(installation_row.idx,frappe.bold(installation_row.ac_serial_no))),
@@ -32,11 +35,10 @@ def synch_serial_no_in_items_and_installation_detail_tables(self,method):
 
     if len(to_remove)>0:
         [self.installation_detail_ct.remove(d) for d in to_remove]
-
         for index,installation_row in enumerate(self.get('installation_detail_ct')):
             installation_row.idx = index+1
 
-    if len(to_remove)==0 and self.get('installation_detail_ct') and len(self.get('installation_detail_ct'))>0:
+    if len(to_remove)==0 and self.get('installation_detail_ct') and len(self.get('installation_detail_ct'))>0 and ac_serial_no_matched==False:
         self.installation_detail_ct = []
         frappe.msgprint(msg=_("A/C Serial no are not present in Items table. Hence Installation Details is made empty"),
                             title="Installation Details is made empty.",indicator="red",alert=1)
