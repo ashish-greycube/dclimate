@@ -1,4 +1,14 @@
 frappe.ui.form.on('Installation Note', {
+    // before_save: function(frm){
+    //     frm.doc.truck_vin_cf=frm.doc.pick_truck_vin_cf
+
+    // },
+    pick_truck_vin_cf: function(frm){
+        frm.set_value('truck_vin_cf', frm.doc.pick_truck_vin_cf)
+    },
+    sales_order_cf: function(frm){
+        set_customer_end_customer_for_so(frm)
+    },
     check_all_cf: function(frm){
         var checklist_items = frm.doc.dc_installation_checklist_detail_cf || [];
         for (let index in checklist_items){
@@ -9,9 +19,20 @@ frappe.ui.form.on('Installation Note', {
         frm.refresh_field('dc_installation_checklist_detail_cf')
     },
     refresh : function(frm){
+        if (frm.doc.sales_order_cf && frm.doc.items.length>0) {
+            set_options_for_truck_vin(frm)
+        }
         $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
     },
     setup:function(frm){
+        frm.set_query('pick_serial_no_cf', 'items', () => {
+            return {
+                filters: {
+                    status:[ '!=','Delivered']
+                }
+            }
+        })
+
 		frm.set_query('supplier_location_cf', function (doc) {
 			return {
 				query: 'frappe.contacts.doctype.address.address.address_query',
@@ -120,6 +141,9 @@ function get_item_details(item_code, frm) {
 frappe.ui.form.on('Installation Note Item', {
     item_code:function(frm,cdt,cdn){
         let row=locals[cdt][cdn]
+        if (row.item_code) {
+            set_options_for_truck_vin(frm)
+        }
         if (row.item_code && (frm.doc.dc_installation_checklist_multi_cf == undefined || frm.doc.dc_installation_checklist_multi_cf == '')) {
             return frappe.call({
 				method: "dclimate.installation_note_hook.get_dc_installation_checklist",
@@ -135,5 +159,59 @@ frappe.ui.form.on('Installation Note Item', {
 				}
 			});          
         }
+    },
+    pick_serial_no_cf:function(frm,cdt,cdn){
+        let row=locals[cdt][cdn]
+            row.serial_no=row.pick_serial_no_cf
+            frm.refresh_field('items');
     }
 })
+
+function set_customer_end_customer_for_so(frm){
+    if (frm.doc.sales_order_cf) {
+            frappe.db.get_value('Sales Order', frm.doc.sales_order_cf, ['customer', 'end_customer_cf'])
+            .then(r => {
+                let values = r.message;
+                frm.set_value('customer', values.customer)
+                frm.set_value('end_customer_cf', values.end_customer_cf)
+            })            
+    }
+}
+
+async function set_options_for_truck_vin(frm){
+    let valid_fields=[]
+    let items=frm.doc.items
+    let so=frm.doc.sales_order_cf
+    for (let index = 0; index < items.length; index++) {
+        let item = items[index].item_code;
+        if (item==undefined) {
+            return
+        }
+        let truck_vin_cifs=await fetch_truck_vin_cf_from_so_item(so,item)
+        truck_vin_cifs=truck_vin_cifs.split("\n")
+        for (let index = 0; index < truck_vin_cifs.length; index++) {
+            let truck_vin_cif = truck_vin_cifs[index];
+            if (truck_vin_cif!='') {
+                valid_fields.push({"label": truck_vin_cif, "value":truck_vin_cif})
+            }
+        }
+    }
+    frm.fields_dict.pick_truck_vin_cf.set_data(valid_fields)
+}
+
+function fetch_truck_vin_cf_from_so_item(so,item) {
+   return frappe.db.get_list('Sales Order Item', {
+        fields: ['truck_vin_cf'],
+        filters: {
+            parent: so,
+            item_code:item
+        }
+    }).then(records => {
+        if (records && records[0])  {
+            return records[0].truck_vin_cf
+        } else {
+            return ''
+        }
+        
+    })    
+}

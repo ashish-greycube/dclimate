@@ -1,1 +1,2 @@
 dclimate.patches.create_dc_service_record_cf_in_delivery_note
+dclimate.patches.create_truck_vin_cf_in_so_item

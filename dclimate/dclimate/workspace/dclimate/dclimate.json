@@ -141,7 +141,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Report",
-   "link_count": 2,
+   "link_count": 3,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -164,9 +164,19 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "End Customer Gross Profit",
+   "link_count": 0,
+   "link_to": "End Customer Gross Profit",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-03-24 00:22:48.085786",
+ "modified": "2023-05-30 03:05:22.521123",
  "modified_by": "Administrator",
  "module": "DClimate",
  "name": "DClimate",
