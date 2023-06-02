@@ -768,7 +768,7 @@ class GrossProfitGenerator(object):
 	def load_invoice_items(self):
 		conditions = ""
 		if self.filters.company:
-			conditions += " and company = %(company)s"
+			conditions += " and `tabSales Invoice`.company = %(company)s"
 		if self.filters.from_date:
 			conditions += " and posting_date >= %(from_date)s"
 		if self.filters.to_date:
@@ -813,8 +813,6 @@ class GrossProfitGenerator(object):
 
 		if self.filters.get("item_code"):
 			conditions += " and `tabSales Invoice Item`.item_code = %(item_code)s"
-		print('-'*10)
-		print('conditions',conditions,'get_match_cond("Sales Invoice")',get_match_cond("Sales Invoice"))
 		self.si_list = frappe.db.sql(
 			"""
 			select
@@ -852,9 +850,8 @@ class GrossProfitGenerator(object):
 				match_cond=get_match_cond("Sales Invoice"),
 			),
 			self.filters,
-			as_dict=1,debug=1
+			as_dict=1,debug=0
 		)
-		print('-'*10)
 	def get_delivery_notes(self):
 		self.delivery_notes = frappe._dict({})
 		if self.si_list:
