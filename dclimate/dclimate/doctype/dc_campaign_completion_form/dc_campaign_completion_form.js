@@ -35,29 +35,58 @@ frappe.ui.form.on('DC Campaign Completion Form', {
 	},
 	service_by_supplier: function (frm) {
 		if (frm.doc.service_by_supplier) {
-			frappe.db.get_list('Dynamic Link', {
-				fields: ['parent'],
-				filters: {
-					link_doctype: 'Supplier',
-					link_name: frm.doc.service_by_supplier,
-					parentfield : 'links',
-					parenttype :'Address'						
-				}
-			}).then(records => {
-				if (records.length > 0) {
-					let address_list = []
-					records.forEach(record => {
-						address_list.push(record.parent)
-					});
-					frm.set_query('supplier_address', () => {
-						return {
-							filters: {
-								name: ['in', address_list]
+			// frappe.db.get_list('Dynamic Link', {
+			// 	fields: ['parent'],
+			// 	filters: {
+			// 		link_doctype: 'Supplier',
+			// 		link_name: frm.doc.service_by_supplier,
+			// 		parentfield : 'links',
+			// 		parenttype :'Address'						
+			// 	}
+			// }).then(records => {
+			// 	if (records.length > 0) {
+			// 		let address_list = []
+			// 		records.forEach(record => {
+			// 			address_list.push(record.parent)
+			// 		});
+			// 		frm.set_query('supplier_address', () => {
+			// 			return {
+			// 				filters: {
+			// 					name: ['in', address_list]
+			// 				}
+			// 			}
+			// 		})
+			// 	}
+			// })dclimate/dclimate/dclimate/doctype/dc_campaign_completion_form/dc_campaign_completion_form.py
+			frappe.call({
+				method: 'dclimate.dclimate.doctype.dc_campaign_completion_form.dc_campaign_completion_form.get_service_by_supplier',
+				args: {
+					"link_doctype": 'Supplier',
+					"link_name": frm.doc.service_by_supplier,
+					"parentfield" : 'links',
+					"parenttype" :'Address'
+				},
+				callback: (r) => {
+					// on success
+					console.log(r)
+					let records=r.message
+					if (records.length > 0) {
+						let address_list = []
+						records.forEach(record => {
+							address_list.push(record.parent)
+						});
+						frm.set_query('supplier_address', () => {
+							return {
+								filters: {
+									name: ['in', address_list]
+								}
 							}
-						}
-					})
+						})
+					}				
+				},
+				error: (r) => {
 				}
-			})
+			})			
 		}
 	},	
 	serial_no: function(frm){

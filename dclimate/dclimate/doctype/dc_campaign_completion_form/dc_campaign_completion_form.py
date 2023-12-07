@@ -201,3 +201,10 @@ def change_dc_campaign_completion_status_to_finished(self,method):
 					title="DC Campaign Completion Form status changed.",
 					indicator="green")
 	
+@frappe.whitelist()
+def get_service_by_supplier(link_doctype,link_name,parentfield,parenttype):
+	return frappe.db.get_all('Dynamic Link', filters={
+					'link_doctype': link_doctype,
+					'link_name': link_name,
+					'parentfield' : parentfield,
+					'parenttype' :parenttype},fields=['parent'])		
