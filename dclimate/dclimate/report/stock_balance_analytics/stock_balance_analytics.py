@@ -2,13 +2,12 @@
 # For license information, please see license.txt
 
 import frappe
-
 from erpnext.stock.report.stock_balance.stock_balance import (
     execute as _execute,
 )
 
-from frappe.utils.dateutils import get_dates_from_timegrain
-from frappe.utils import add_days, add_to_date, unique
+from frappe.utils.dateutils import get_dates_from_timegrain, getdate
+from frappe.utils import add_days, add_to_date, unique, add_months, get_last_day
 
 HIDDEN_COLUMNS = (
     "opening_qty",
@@ -21,6 +20,8 @@ HIDDEN_COLUMNS = (
     "out_val",
     "val_rate",
 )
+
+STEPS = {"Half Yearly": 6, "Quarterly": 3, "Monthly": 1}
 
 
 def get_columns_for_timegrain(columns, timegrains, filters):
@@ -54,7 +55,20 @@ def get_columns_for_timegrain(columns, timegrains, filters):
     return tg_columns
 
 
+def get_dates_for_timegrain(filters):
+    if filters.timegrain == "Yearly":
+        return [(filters.from_date, filters.to_date)]
+    else:
+        step = STEPS.get(filters.timegrain)
+        out = []
+        for d in range(0, 12, step):
+            t = add_months(filters.from_date, d)
+            out.append((t, get_last_day(add_months(t, step - 1))))
+        return out
+
+
 def execute(filters=None):
+    results = {}
 
     from_date, to_date = frappe.db.get_value(
         "Fiscal Year", filters.fiscal_year, ["year_start_date", "year_end_date"]
@@ -63,20 +77,10 @@ def execute(filters=None):
     filters.to_date = to_date
     erpnext_columns, erpnext_data = _execute(filters)
 
-    results = {}
     for d in erpnext_data:
         results[(d.item_code, d.warehouse)] = d
 
-    if filters.timegrain == "Half Yearly":
-        timegrains = get_dates_from_timegrain(from_date, to_date, "Yearly")
-        timegrains[0:0] = [add_to_date(to_date, months=-6)]
-    else:
-        timegrains = get_dates_from_timegrain(from_date, to_date, filters.timegrain)
-
-    timegrain_dates = []
-    for d in timegrains:
-        timegrain_dates.append((from_date, d))
-        from_date = add_days(d, 1)
+    timegrain_dates = get_dates_for_timegrain(filters)
 
     # Get data for each date range and update results dict
     for idx, d in enumerate(timegrain_dates, start=1):
@@ -105,11 +109,9 @@ def execute(filters=None):
                 )
     consolidated_data = list(results.values())
 
-    # include columns for timegrain
-    consolidated_columns = get_columns_for_timegrain(
+    erpnext_columns[5:5] = get_columns_for_timegrain(
         erpnext_columns, timegrains=timegrain_dates, filters=filters
     )
-    erpnext_columns[5:5] = consolidated_columns
 
     if not filters.show_original_columns:
         for c in erpnext_columns:
