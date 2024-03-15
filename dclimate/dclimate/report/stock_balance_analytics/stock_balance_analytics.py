@@ -78,7 +78,15 @@ def execute(filters=None):
     erpnext_columns, erpnext_data = _execute(filters)
 
     for d in erpnext_data:
-        results[(d.item_code, d.warehouse)] = d
+        results[(d.item_code, d.warehouse)] = {
+            **d,
+            **{
+                "opening_qty_1": d.opening_qty,
+                "opening_val_1": d.opening_val,
+                "bal_qty_1": d.opening_qty,
+                "bal_val_1": d.opening_val,
+            },
+        }
 
     timegrain_dates = get_dates_for_timegrain(filters)
 
@@ -87,26 +95,27 @@ def execute(filters=None):
         filters.from_date, filters.to_date = d
         _, data = _execute(filters)
         for r in data:
-            item_wh = (r.item_code, r.warehouse)
-            if item_wh in results:
-                results[item_wh].update(
+            item_wh_key = (r.item_code, r.warehouse)
+            results[item_wh_key].update(
+                {
+                    f"bal_qty_{idx}": r.bal_qty,
+                    f"bal_val_{idx}": r.bal_val,
+                    f"opening_qty_{idx}": r.opening_qty,
+                    f"opening_val_{idx}": r.opening_val,
+                }
+            )
+        # handle missing items in idx period
+        for _, item in results.items():
+            if not f"bal_qty_{idx}" in item:
+                item.update(
                     {
-                        f"bal_qty_{idx}": r.bal_qty,
-                        f"bal_val_{idx}": r.bal_val,
-                        f"opening_qty_{idx}": r.opening_qty,
-                        f"opening_val_{idx}": r.opening_val,
+                        f"opening_qty_{idx}": item[f"bal_qty_{idx-1}"],
+                        f"opening_val_{idx}": item[f"bal_val_{idx-1}"],
+                        f"bal_qty_{idx}": item[f"bal_qty_{idx-1}"],
+                        f"bal_val_{idx}": item[f"bal_val_{idx-1}"],
                     }
                 )
-            else:
-                suffix = idx == 1 and "" or f"_{idx-1}"
-                results[item_wh].update(
-                    {
-                        f"opening_qty_{idx}": results[item_wh][f"bal_qty" + suffix],
-                        f"opening_val_{idx}": results[item_wh][f"bal_val" + suffix],
-                        f"bal_qty_{idx}": results[item_wh][f"bal_qty" + suffix],
-                        f"bal_val_{idx}": results[item_wh][f"bal_val" + suffix],
-                    }
-                )
+
     consolidated_data = list(results.values())
 
     erpnext_columns[5:5] = get_columns_for_timegrain(
