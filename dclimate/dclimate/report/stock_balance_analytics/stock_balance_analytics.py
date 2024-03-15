@@ -8,7 +8,7 @@ from erpnext.stock.report.stock_balance.stock_balance import (
 )
 
 from frappe.utils.dateutils import get_dates_from_timegrain
-from frappe.utils import add_days, add_to_date
+from frappe.utils import add_days, add_to_date, unique
 
 HIDDEN_COLUMNS = (
     "opening_qty",
@@ -23,7 +23,7 @@ HIDDEN_COLUMNS = (
 )
 
 
-def get_columns_for_timegrain(columns, timegrains):
+def get_columns_for_timegrain(columns, timegrains, filters):
     tg_columns = []
     fields = (
         "opening_qty",
@@ -31,6 +31,12 @@ def get_columns_for_timegrain(columns, timegrains):
         "bal_qty",
         "bal_val",
     )
+
+    def _get_label(timegrain, label):
+        if filters.timegrain == "Yearly":
+            return label
+        return " - ".join(unique(x.strftime("%b") for x in timegrain)) + " " + label
+
     for idx, t in enumerate(timegrains, start=1):
         for f in fields:
             c = next(filter(lambda x: x["fieldname"] == f, columns))
@@ -39,9 +45,7 @@ def get_columns_for_timegrain(columns, timegrains):
                     **c,
                     **{
                         "fieldname": c["fieldname"] + "_{}".format(idx),
-                        "label": len(timegrains) > 1
-                        and t[0].strftime("%b") + " " + c["label"]
-                        or c["label"],
+                        "label": _get_label(t, c["label"]),
                         "width": 130,
                     },
                 }
@@ -103,7 +107,7 @@ def execute(filters=None):
 
     # include columns for timegrain
     consolidated_columns = get_columns_for_timegrain(
-        erpnext_columns, timegrains=timegrain_dates
+        erpnext_columns, timegrains=timegrain_dates, filters=filters
     )
     erpnext_columns[5:5] = consolidated_columns
 
