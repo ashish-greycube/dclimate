@@ -23,7 +23,7 @@ frappe.query_reports["Stock Balance Analytics"] = {
       fieldname: "timegrain",
       label: __("Timegrain"),
       fieldtype: "Select",
-      options: "Yearly\nQuarterly\nMonthly",
+      options: "Yearly\nHalf Yearly\nQuarterly\nMonthly",
       reqd: 1,
     },
     {
@@ -104,6 +104,13 @@ frappe.query_reports["Stock Balance Analytics"] = {
   formatter: function (value, row, column, data, default_formatter) {
     value = default_formatter(value, row, column, data);
 
+    if (column.fieldname.startsWith("opening_qty")) {
+      console.log(value);
+      value = value.replace(
+        "style='text-align: right'",
+        "style='text-align: right;background-color:#efefef;margin:-2px -2px'"
+      );
+    }
     if (column.fieldname == "out_qty" && data && data.out_qty > 0) {
       value = "<span style='color:red'>" + value + "</span>";
     } else if (column.fieldname == "in_qty" && data && data.in_qty > 0) {

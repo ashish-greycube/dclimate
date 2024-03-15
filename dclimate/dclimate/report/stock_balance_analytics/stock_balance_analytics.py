@@ -8,7 +8,7 @@ from erpnext.stock.report.stock_balance.stock_balance import (
 )
 
 from frappe.utils.dateutils import get_dates_from_timegrain
-from frappe.utils import add_days
+from frappe.utils import add_days, add_to_date
 
 HIDDEN_COLUMNS = (
     "opening_qty",
@@ -63,7 +63,12 @@ def execute(filters=None):
     for d in erpnext_data:
         results[(d.item_code, d.warehouse)] = d
 
-    timegrains = get_dates_from_timegrain(from_date, to_date, filters.timegrain)
+    if filters.timegrain == "Half Yearly":
+        timegrains = get_dates_from_timegrain(from_date, to_date, "Yearly")
+        timegrains[0:0] = [add_to_date(to_date, months=-6)]
+    else:
+        timegrains = get_dates_from_timegrain(from_date, to_date, filters.timegrain)
+
     timegrain_dates = []
     for d in timegrains:
         timegrain_dates.append((from_date, d))
