@@ -137,3 +137,18 @@ def get_checklist_detail(checklist_name):
       'is_checked':row.is_checked
     })
   return data
+
+
+@frappe.whitelist()
+def get_truck_vin_cf_from_so_item(so_item=None):
+  so_item=json.loads(so_item)
+  result=frappe.db.get_list('Sales Order Item', filters={
+                'parent': so_item.get('so'),
+            'item_code':so_item.get('item')},
+            fields= ['truck_vin_cf']
+    
+)
+  if len(result)>0:
+      return result[0].truck_vin_cf
+  else:
+    return ''

@@ -141,7 +141,7 @@ function get_item_details(item_code, frm) {
 frappe.ui.form.on('Installation Note Item', {
     item_code:function(frm,cdt,cdn){
         let row=locals[cdt][cdn]
-        if (row.item_code) {
+        if (row.item_code && frm.doc.sales_order_cf) {
             set_options_for_truck_vin(frm)
         }
         if (row.item_code && (frm.doc.dc_installation_checklist_multi_cf == undefined || frm.doc.dc_installation_checklist_multi_cf == '')) {
@@ -200,18 +200,30 @@ async function set_options_for_truck_vin(frm){
 }
 
 function fetch_truck_vin_cf_from_so_item(so,item) {
-   return frappe.db.get_list('Sales Order Item', {
-        fields: ['truck_vin_cf'],
-        filters: {
-            parent: so,
-            item_code:item
-        }
-    }).then(records => {
-        if (records && records[0])  {
-            return records[0].truck_vin_cf
+//    return frappe.db.get_list('Sales Order Item', {
+//         fields: ['truck_vin_cf'],
+//         filters: {
+//             parent: so,
+//             item_code:item
+//         }
+//     }).then(records => {
+//         if (records && records[0])  {
+//             return records[0].truck_vin_cf
+//         } else {
+//             return ''
+//         }
+        
+//     })    
+    
+    return frappe.call('dclimate.installation_note_hook.get_truck_vin_cf_from_so_item', {
+        so_item: {'so':so,'item':item}
+    }).then(r => {
+        console.log(r.message)
+        if (r.message) {
+            return r.message
         } else {
             return ''
         }
-        
-    })    
+    })
+
 }
