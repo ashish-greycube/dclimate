@@ -4,6 +4,9 @@ from frappe import _
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
 def onload(self,method):
+    if self.customer in ["CUST-2021-00060" , "CUST-2022-00037"]:
+        print('no work, return----')
+        return    
     if self.name:
         load_installation_note_details_and_remarks(self)
 
@@ -44,6 +47,9 @@ def on_submit_of_delivery_note(self,method):
   update_warranty_info_based_on_delivery_note(self,method)
 
 def check_serial_no_is_associated_with_installation_note(self,method):
+    if self.customer in ["CUST-2021-00060" , "CUST-2022-00037"]:
+        print('no work, return----')
+        return    
     for item in self.items:
       serial_nos=get_serial_nos(item.serial_no)
       for serial_no in serial_nos:

@@ -12,6 +12,9 @@ def set_income_account_for_dc_out_of_warranty_service_record(self,method):
             frappe.msgprint(msg=_("Income Account {0} is set in Sales Invoice Items".format(frappe.bold(after_sales_income_account))),title="Delivery Note is created.",indicator="green",alert=1)            
 
 def synch_serial_no_in_items_and_installation_detail_tables(self,method):
+    if self.customer in ["CUST-2021-00060" , "CUST-2022-00037"]:
+        print('no work, return----')
+        return
     # serialized_item_found=False
     ac_serial_no_matched=False
     to_remove = []
