@@ -25,13 +25,13 @@ frappe.ui.form.on('Installation Note', {
         $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
     },
     setup:function(frm){
-        frm.set_query('pick_serial_no_cf', 'items', () => {
-            return {
-                filters: {
-                    status:[ '!=','Delivered']
-                }
-            }
-        })
+        // frm.set_query('pick_serial_no_cf', 'items', () => {
+        //     return {
+        //         filters: {
+        //             status:[ '!=','Delivered']
+        //         }
+        //     }
+        // })
 
 		frm.set_query('supplier_location_cf', function (doc) {
 			return {
