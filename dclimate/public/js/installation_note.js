@@ -1,4 +1,8 @@
 frappe.ui.form.on('Installation Note', {
+    onload_post_render:function(frm){
+        make_child_table_colms_readonly(frm)
+       
+    },
     // before_save: function(frm){
     //     frm.doc.truck_vin_cf=frm.doc.pick_truck_vin_cf
 
@@ -23,6 +27,7 @@ frappe.ui.form.on('Installation Note', {
             set_options_for_truck_vin(frm)
         }
         $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
+        make_child_table_colms_readonly(frm)
     },
     setup:function(frm){
         // frm.set_query('pick_serial_no_cf', 'items', () => {
@@ -226,4 +231,14 @@ function fetch_truck_vin_cf_from_so_item(so,item) {
         }
     })
 
+}
+
+
+function make_child_table_colms_readonly(frm) {
+    if (frappe.user.has_role('Installer')) {
+        frm.fields_dict.dc_installation_checklist_detail_cf.grid.update_docfield_property('activity', 'read_only', 1);
+        frm.fields_dict.dc_installation_checklist_detail_cf.grid.update_docfield_property('description', 'read_only', 1);
+        $('[data-fieldname="dc_installation_checklist_detail_cf"] button.grid-add-row').hide()
+
+    }   
 }
