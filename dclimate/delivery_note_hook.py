@@ -47,6 +47,7 @@ def on_submit_of_delivery_note(self,method):
   update_warranty_info_based_on_delivery_note(self,method)
 
 def check_serial_no_is_associated_with_installation_note(self,method):
+    return
     if self.customer in ["CUST-2021-00060" , "CUST-2022-00037"]:
         print('no work, return----')
         return    
