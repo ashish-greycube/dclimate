@@ -91,7 +91,7 @@ def get_data(filters):
 	conditions = ""
 	
 	if filters.get("serial_no"):
-		conditions = "AND sn.name = '{0}'".format(filters["serial_no"])
+		conditions = " where sn.name = '{0}'".format(filters["serial_no"])
 		
 
 	data = frappe.db.sql(
@@ -110,13 +110,10 @@ def get_data(filters):
 			se_bundle.posting_date AS "latest_stock_entry_date"
 		FROM
 			`tabSerial No` sn
-		-- 1. Installation Note
-		-- (Usually remains a text field/direct link since it's a CRM document, not a core stock movement)
 		JOIN
 			`tabInstallation Note Item` in_item ON in_item.serial_no LIKE CONCAT('%', sn.name, '%')
 		JOIN
 			`tabInstallation Note` inst_note ON inst_note.name = in_item.parent AND inst_note.docstatus = 1
-		-- 2. Delivery Note Details via v15 Serial and Batch Ledger
 		LEFT JOIN (
 			SELECT 
 				sbe.serial_no,  sbb.voucher_no  AS voucher_no,
@@ -125,26 +122,18 @@ def get_data(filters):
 			JOIN `tabSerial and Batch Bundle` sbb ON sbe.parent = sbb.name AND sbb.docstatus = 1
 			WHERE sbb.voucher_type = 'Delivery Note'
 		) dn_bundle ON dn_bundle.serial_no = sn.name
-		-- 3. Sales Invoice Details via v15 Serial and Batch Ledger
 		LEFT JOIN (
 			SELECT 
 				sbe.serial_no, sbb.voucher_no AS voucher_no,sbb.posting_date
 			FROM `tabSerial and Batch Entry` sbe
 			JOIN `tabSerial and Batch Bundle` sbb ON sbe.parent = sbb.name AND sbb.docstatus = 1
 			WHERE sbb.voucher_type = 'Sales Invoice'
-
 		) si_bundle ON si_bundle.serial_no = sn.name
-		-- 4. Stock Entry Details via v15 Serial and Batch Ledger
 		LEFT JOIN (
 			SELECT 
 				sbe.serial_no, sbb.voucher_no AS voucher_no,sbb.posting_date AS posting_date
 			FROM `tabSerial and Batch Entry` sbe
 			JOIN `tabSerial and Batch Bundle` sbb ON sbe.parent = sbb.name AND sbb.docstatus = 1
 			WHERE sbb.voucher_type = 'Stock Entry'
-		) se_bundle ON se_bundle.serial_no = sn.name 
-		where sn.docstatus=1 {0}
-
-		""".format(conditions), as_dict=1, debug=1
-	)
-
+		) se_bundle ON se_bundle.serial_no = sn.name  {0}""".format(conditions), as_dict=1, debug=1)
 	return data
