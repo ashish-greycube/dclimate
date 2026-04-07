@@ -67,9 +67,9 @@ def get_columns():
 			"width" : 150
 		},
 		{
-			"fieldname" : "latest_delivery_note_date",
-			"label" : "Latest Delivery Note Date",
-			"fieldtype" : "Date",
+			"fieldname" : "delivery_note_date",
+			"label" : "Delivery Note Date",
+			"fieldtype" : "Data",
 			"width" : 140
 		},
 		{
@@ -79,9 +79,9 @@ def get_columns():
 			"width" : 150
 		},
 		{
-			"fieldname" : "latest_sales_invoice_date",
-			"label" : "Latest Sales Invoice Date",
-			"fieldtype" : "Date",
+			"fieldname" : "sales_invoice_date",
+			"label" : "Sales Invoice Date",
+			"fieldtype" : "Data",
 			"width" : 140
 		},
 		{
@@ -91,9 +91,9 @@ def get_columns():
 			"width" : 150
 		},
 		{
-			"fieldname" : "latest_stock_entry_date",
-			"label" : "Latest Stock Entry Date",
-			"fieldtype" : "Date",
+			"fieldname" : "stock_entry_date",
+			"label" : "Stock Entry Date",
+			"fieldtype" : "Data",
 			"width" : 140
 		}]
 
@@ -103,41 +103,87 @@ def get_data(filters):
 	conditions = ""
 	
 	if filters.get("serial_no"):
-		conditions = " AND sn.name = '{0}'".format(filters["serial_no"])
+		conditions = " WHERE  sn.name = '{0}'".format(filters["serial_no"])
 		
 
 	data = frappe.db.sql(
 		"""
-		SELECT
-			sn.name AS "serial_number",
-			sn.item_code AS "item_code",
-			sn.warranty_expiry_date AS "warranty_expiry_date",    
-			sn.labor_warranty_expiry_date_cf as "labor_warranty_expiry_date",
-			sn.amc_expiry_date as "amc_expiry_date",
-			sn.installation__note_cf AS "installation_note",
-			sn.customer AS "customer_name",    
-			si.name as sales_invoice,
-			si.posting_date as latest_sales_invoice_date,
-			dn.name as delivery_note,
-			dn.posting_date as latest_delivery_note_date,
-			se_bundle.voucher_no as stock_entry,
-			se_bundle.posting_date as latest_stock_entry_date
-		FROM
-			`tabSerial No` sn
-			left outer join 
-			`tabInstallation Details CT` in_item ON in_item.ac_serial_no=sn.name and in_item.parent LIKE CONCAT('%', 'SINV-', '%')
-			left outer JOIN 
-			`tabSales Invoice` si on si.name=in_item.parent
-			left outer join 
-			`tabInstallation Details CT` dn_item ON dn_item.ac_serial_no=sn.name and dn_item.parent LIKE CONCAT('%', 'MAT-DN', '%')
-			left outer JOIN 
-			`tabDelivery Note` dn on dn.name=dn_item.parent
-		LEFT JOIN (
-			SELECT 
-				sbe.serial_no, sbb.voucher_no AS voucher_no,sbb.posting_date AS posting_date
-			FROM `tabSerial and Batch Entry` sbe
-			JOIN `tabSerial and Batch Bundle` sbb ON sbe.parent = sbb.name AND sbb.docstatus = 1
-			WHERE sbb.voucher_type = 'Stock Entry'
-		) se_bundle ON se_bundle.serial_no = sn.name 
-		where dn.docstatus != 2 AND si.docstatus != 2  {0}""".format(conditions), as_dict=1, debug=1)
+SELECT
+    sn.name AS "serial_number",
+    sn.item_code AS "item_code",  
+    sn.warranty_expiry_date AS "warranty_expiry_date",    
+    sn.labor_warranty_expiry_date_cf AS "labor_warranty_expiry_date",
+    sn.amc_expiry_date AS "amc_expiry_date",
+    sn.installation__note_cf AS "installation_note",
+    sn.customer AS "customer_name",  
+    GROUP_CONCAT(DISTINCT CASE WHEN ledger.voucher_type = 'Delivery Note' THEN ledger.voucher_no END SEPARATOR ', ') AS "delivery_note",
+    GROUP_CONCAT(DISTINCT CASE WHEN ledger.voucher_type = 'Delivery Note' THEN ledger.posting_date END SEPARATOR ', ') AS "delivery_note_date",
+    GROUP_CONCAT(DISTINCT CASE WHEN ledger.voucher_type = 'Sales Invoice' THEN ledger.voucher_no END SEPARATOR ', ') AS "sales_invoice",
+    GROUP_CONCAT(DISTINCT CASE WHEN ledger.voucher_type = 'Sales Invoice' THEN ledger.posting_date END SEPARATOR ', ') AS "sales_invoice_date",
+    GROUP_CONCAT(DISTINCT CASE WHEN ledger.voucher_type = 'Stock Entry' THEN ledger.voucher_no END SEPARATOR ', ') AS "stock_entry",
+    GROUP_CONCAT(DISTINCT CASE WHEN ledger.voucher_type = 'Stock Entry' THEN ledger.posting_date END SEPARATOR ', ') AS "stock_entry_date"
+FROM
+    `tabSerial No` sn
+JOIN (
+    SELECT 
+        sbe.serial_no AS search_sn, 
+        sbb.voucher_type, 
+        sbb.voucher_no,
+        sbb.posting_date
+    FROM `tabSerial and Batch Entry` sbe
+    JOIN `tabSerial and Batch Bundle` sbb ON sbe.parent = sbb.name AND sbb.docstatus = 1
+    WHERE sbb.voucher_type IN ('Delivery Note', 'Sales Invoice', 'Stock Entry')     
+    UNION
+    SELECT 
+        dni.serial_no AS search_sn, 
+        'Delivery Note' AS voucher_type, 
+        dni.parent AS voucher_no,
+        dn.posting_date
+    FROM `tabDelivery Note Item` dni 
+    JOIN `tabDelivery Note` dn ON dn.name = dni.parent
+    WHERE dni.docstatus = 1 AND dni.serial_no IS NOT NULL AND dni.serial_no != ''
+  UNION
+    SELECT 
+        sii.serial_no AS search_sn, 
+        'Sales Invoice' AS voucher_type, 
+        sii.parent AS voucher_no,
+        si.posting_date
+    FROM `tabSales Invoice Item` sii 
+    JOIN `tabSales Invoice` si ON si.name = sii.parent
+    WHERE sii.docstatus = 1 AND sii.serial_no IS NOT NULL AND sii.serial_no != ''
+    UNION
+    SELECT 
+        sed.serial_no AS search_sn, 
+        'Stock Entry' AS voucher_type, 
+        sed.parent AS voucher_no,
+        se.posting_date
+    FROM `tabStock Entry Detail` sed 
+    JOIN `tabStock Entry` se ON se.name = sed.parent
+    WHERE sed.docstatus = 1 AND sed.serial_no IS NOT NULL AND sed.serial_no != ''
+  UNION
+    SELECT 
+        dn_ct.ac_serial_no AS search_sn, 
+        'Delivery Note' AS voucher_type, 
+        dn_ct.parent AS voucher_no,
+        dn.posting_date
+    FROM `tabInstallation Details CT` dn_ct
+    JOIN `tabDelivery Note` dn ON dn.name = dn_ct.parent
+    WHERE dn_ct.ac_serial_no IS NOT NULL AND dn_ct.ac_serial_no != ''
+      AND (dn_ct.parenttype = 'Delivery Note' OR dn_ct.parent LIKE '%MAT-DN%')
+     UNION
+    SELECT 
+        si_ct.ac_serial_no AS search_sn, 
+        'Sales Invoice' AS voucher_type, 
+        si_ct.parent AS voucher_no,
+        si.posting_date
+    FROM `tabInstallation Details CT` si_ct
+    JOIN `tabSales Invoice` si ON si.name = si_ct.parent
+    WHERE si_ct.ac_serial_no IS NOT NULL AND si_ct.ac_serial_no != ''
+      AND (si_ct.parenttype = 'Sales Invoice' OR si_ct.parent LIKE '%SINV-%')
+) AS ledger 
+    ON (ledger.search_sn = sn.name OR ledger.search_sn LIKE CONCAT('%', sn.name, '%'))
+	{0}
+GROUP BY 
+    sn.name, 
+    sn.item_code;""".format(conditions), as_dict=1, debug=1)
 	return data
